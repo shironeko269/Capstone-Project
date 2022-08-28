@@ -1,0 +1,428 @@
+version: "3.1"
+
+nlu:
+
+- intent: out_of_scope
+  examples: |
+    - I want to order food
+    - What is 2 + 2?
+    - Who's the US President?
+
+- intent: greet
+  examples: |
+    - Chào bạn
+    - Xin chào
+    - Có ai ở đây không
+    - Tôi cần giúp đỡ
+    - hello
+    - hi
+    - hey
+    - này
+    - help
+    - giúp
+
+- intent: ask_price
+  examples: |
+    - thuê sân giá bao nhiêu?
+    - sân mini thuê mấy
+    - hỏi giá sân lớn
+    - hỏi giá sân nhỏ
+    - thuê trong 1 tiếng giá sao
+    - giá cả thế nào 
+    - tiền thuê bao nhiêu
+
+- intent: ask_bot_can_do
+  examples: |
+    - Bạn có thể làm gì?
+    - Bạn có thể giúp gì cho tôi
+    - Bạn hỗ trợ tôi được cái gì
+    - mày biết làm gì
+
+- intent: say_bye
+  examples: |
+    - bye
+    - pp
+    - tạm biệt
+    - bai
+
+- intent: ask_promotion
+  examples: |
+    - có ưu đãi gì không
+    - có chương trình khuyến mãi gì không
+    - có nhận quà không
+    - giảm giá gì không
+    - khuyến mại gì không
+
+- intent: ask_time_ship_product
+  examples: |
+    - thời gian ship hàng 
+    - ship mấy ngày
+    - thời gian giao hàng
+
+- intent: bot_challenge
+  examples: |
+    - bạn là người hay máy
+    - bạn là robot hả
+    - bạn có phải là con người không
+    - bạn có phải người máy không
+    - bạn có phải là robot không
+    - mày là robot hay người
+    - tôi đang nhắn tin với máy hay người
+
+- intent: ask_info_pitch
+  examples: |
+    - tôi muốn đặt sân bóng
+    - muốn thuê sân bóng
+    - muốn đá bóng
+    - thuê sân đá banh
+    - đặt sân để đá
+    - tôi muốn xem sân bóng
+    - tôi muốn hỏi về sân bóng
+    - xem sân bóng
+    - tôi muốn tìm sân bóng
+    - tìm sân bóng
+    - tìm chỗ đá bóng
+
+- intent: ask_pitch_by_name
+  examples: |
+    - tôi muốn tìm sân bóng bằng tên
+    - tìm theo tên
+    - xin info sân bóng theo tên
+    - tôi tìm theo tên
+
+
+- intent: ask_pitch_by_name_with_entity
+  examples: |
+    - Tôi muốn đặt ở sân [Thanh Minh](pitch_name)
+    - Thuê ở sân [Hoà Bình](pitch_name)
+    - Đá ở [Côn Đảo](pitch_name)
+    - Tôi muốn xem sân [Mỹ Đình](pitch_name)
+    - coi sân [Song Long](pitch_name)
+    - hỏi về sân [Quốc Hiệp](pitch_name)
+    - xem sân [Huy Hoàng](pitch_name)
+    - sân [Huy Hoàng](pitch_name)
+    - sân [binh minh](pitch_name)
+
+
+- intent: ask_pitch_by_location
+  examples: |
+    - tôi muốn tìm sân gần đây
+    - tìm sân ở khu vực này
+    - tìm sân theo địa chỉ
+    - thuê sân gần đây
+    - đặt sân ở chỗ này
+    - Có sân nào gần tôi không?
+    - gần đây có sân nào không?
+    - chỗ này có sân nào hoạt động không?
+    - ở đây có sân nào gần k?
+
+- intent: ask_pitch_by_location_with_entity
+  examples: |
+    - gần [Quang Vinh](location) không
+    - quanh quanh [Hoà Hải](location)
+    - chỗ [Hoà Hải](location)
+    - thuê gần [Hoà Hải](location)
+
+
+
+- intent: ask_pitch_has_not_been_booked
+  examples: |
+    - tôi muốn xem sân còn trống?
+    - có sân nào chưa được đặt không?
+    - còn sân nào chưa ai thuê không?
+    - sân nào không ai đặt?
+    - tôi có thể thuê sân nào?
+    - có sân nào trống không  
+    - hiện tại có sân nào trống không
+    - bây giờ có sân nào trống không
+    - có sân nào đang còn trống
+    - có sân bóng đang chưa ai đặt
+
+- intent: ask_pitch_has_not_been_booked_with_entity
+  examples: |
+    - tôi muốn còn trống ở [Nguyễn Hữu Thọ](location)
+    - trống ở [Hoà Hải](location)
+    - chưa ai thuê ở [Hoà Hải](location)
+    - chưa ai đặt ở [Hoà Hải](location)
+    - sân nào còn trống ở [Hoà Hải](location)
+
+
+- intent: ask_shopping
+  examples: |
+    - Ở đây có bán gì ngoài đặt sân không bạn?
+    - Sân mình có bán gì không?
+    - Ở sân bóng có dịch vụ gì không?
+    - Có bán gì không?
+
+- intent: ask_products_by_category
+  examples: |    
+    - tôi muốn mua sản phẩm ở đây
+    - tôi thích mua đồ ở đây 
+
+- intent: ask_products_best_seller
+  examples: | 
+    - Cái nào là nhiều người mua nhất vậy?
+    - Cái nào bán chạy nhất vậy bạn?
+    - Vậy cái nào bán chạy nhất hè?
+    - Cái gì được mua nhiều nhất vậy?
+    - Hiện tại cái nào hot nhất vậy?
+    - Sản phẩm nào được yêu thích nhất vậy?
+    - Sản phẩm đang được chuộng nhất?
+
+- intent: ask_new_prodcuts
+  examples: | 
+    - Bữa nay có sản phẩm nào mới không?
+    - Cửa hàng có bán gì mới không?
+    - Hôm nay có sản phẩm nào mới không vậy?
+    - Có cái nào mới về hàng không?
+
+- intent: ask_detail_category_product
+  examples: |
+    - Có bán [quần](product) không?
+    - Cho tôi xem [áo](product) thể thao?
+    - Tôi muốn mua [giày](product) đá bóng?
+    - mua [bao tay](product)
+    - [áo thun](product)
+    - có bán [áo](product) gì không?
+
+
+
+- intent: ask_weather
+  examples: |
+    - thời tiết [hôm nay](thoi_gian_ngay) thế nào?
+    - thời tiết
+    - trời [ngày mốt](thoi_gian_ngay) thế nào?
+    - nhiệt độ bao nhiêu?
+    - nhiệt độ [hôm nay](thoi_gian_ngay) là bao nhiêu?
+    - thời tiết [chiều](buoi_trong_ngay) [hôm nay](thoi_gian_ngay)
+    - nhiệt độ [chiều](buoi_trong_ngay) [hôm nay](thoi_gian_ngay)
+    - xem thời tiết
+    - xem nhiệt độ
+    - thời tiết buổi [chiều](buoi_trong_ngay) thế nào
+    - thời tiết buổi [trưa](buoi_trong_ngay) [ngày mai](thoi_gian_ngay) thế nào?
+    - trời buổi [sáng](buoi_trong_ngay) [ngày mốt](thoi_gian_ngay) thế nào?
+    - nhiệt độ [tối](buoi_trong_ngay) [hôm nay](thoi_gian_ngay) là bao nhiêu?
+    - [ngày mai](thoi_gian_ngay) trời có mưa không
+    - [hôm nay](thoi_gian_ngay) thời tiết thế nào
+    - nhiệt độ [ngày mốt](thoi_gian_ngay) thế nào
+    - thời tiết [ngày mốt](thoi_gian_ngay)
+
+- intent: affirm
+  examples: |
+    - vâng
+    - được rồi
+    - tất nhiên
+    - nghe hay đó
+    - chính xác
+    - ok
+    - okay
+    - oke
+    - ời
+    - ừ
+    - um
+    - yes
+
+- intent: thanks
+  examples: |
+    - cảm ơn 
+    - thanks nhé
+    - tks
+    - cám ơn bạn
+    - thank you 
+
+- intent: deny
+  examples: |
+    - hong
+    - không á
+    - không nhé
+    - không bao giờ
+    - tôi không nghĩ vậy
+    - đừng như vậy chứ
+    - không đời nào
+    - hoàn toàn không
+    - thôi
+    - đủ rồi
+    - vậy được rồi
+
+
+- lookup: location
+  examples: |
+    - Thanh Bình
+    - Thanh Binh
+    - Thuận Phước
+    - Thuan Phuoc
+    - Thạch Thang
+    - Thach Thang
+    - Hải Châu 1
+    - Hai Chau 1
+    - Hải Châu 2
+    - Hai Chau 2
+    - Phước Ninh
+    - Phuoc Ninh
+    - Hòa Thuận Tây
+    - Hoa Thuan Tay
+    - Hòa Thuận Đông
+    - Hoa Thuan Dong
+    - Nam Dương
+    - Nam Duong
+    - Bình Thuận
+    - Binh Thuan
+    - Hòa Cường Bắc
+    - Hoa Cuong Bac
+    - Hòa Cường Nam
+    - Hoa Cuong Nam
+    - Khuê Trung
+    - Khue Trung
+    - Hòa Thọ Đông
+    - Hoa Tho Dong
+    - Hòa Thọ Tây
+    - Hoa Tho Tay
+    - Hòa An
+    - Hoa An
+    - Hòa Phát
+    - Hoa Phat
+    - Hòa Xuân
+    - Hoa Xuan
+    - Vĩnh Trung
+    - Vinh Trung
+    - Tân Chính
+    - Tan Chinh
+    - Thạc Gián
+    - Thac Gian
+    - Chính Gián
+    - Chinh Gian
+    - Tam Thuận
+    - Tam Thuan
+    - Xuân Hà
+    - Xuan Ha
+    - An Khê
+    - An Khe
+    - Hoà Khê
+    - Hoa Khe
+    - Thanh Khê Đông
+    - Thanh Khe Dong
+    - Thanh Khê Tây
+    - Thanh Khe Tay
+    - Hoà Minh
+    - Hoa Minh
+    - Hòa Khánh Nam
+    - Hoa Khanh Nam
+    - Hoà Khánh Bắc
+    - Hoa Khanh Bac
+    - Hoà Hiệp Nam
+    - Hoa Hiep Nam
+    - Hòa Hiệp Bắc
+    - Hoa Hiep Bac
+    - Mỹ An
+    - My An
+    - Khuê Mỹ
+    - Khue My
+    - Hòa Hải
+    - Hoa Hai
+    - Hòa Quý
+    - Hoa Quy
+    - Thọ Quang
+    - Tho Quang
+    - Mân Thái
+    - Man Thai
+    - Phước Mỹ
+    - Phuoc My
+    - An Hải Bắc
+    - An Hai Bac
+    - An Hải Đông
+    - An Hai Dong
+    - An Hải Tây
+    - An Hai Tay
+    - An Thượng
+    - An Thuong
+    - Hòa Châu
+    - Hoa Chau
+    - Hòa Tiến
+    - Hoa Tien
+    - Hòa Phước
+    - Hoa Phuoc
+    - Hòa Phong
+    - Hoa Phong
+    - Hòa Nhơn
+    - Hoa Nhon
+    - Hòa Khương
+    - Hoa Khuong
+    - Hòa Phú
+    - Hoa Phu
+    - Hòa Sơn
+    - Hoa Son
+    - Hòa Ninh
+    - Hoa Ninh
+    - Hòa Liên
+    - Hoa Lien
+    - Hòa Bắc
+    - Hoa Bac
+    - Hải Châu
+    - Hai Chau
+    - Cẩm Lệ
+    - Cam Le
+    - Thanh Khê
+    - Thanh Khe
+    - Liên Chiểu
+    - Lien Chieu
+    - Ngũ Hành Sơn
+    - Ngu Hanh Son
+    - Sơn Trà
+    - Son Tra
+    - Hòa Vang
+    - Hoa Vang
+    - Hoàng Sa
+    - Hoang Sa
+
+- lookup: product
+  examples: |
+    - áo
+    - quần
+    - bộ quần áo
+    - giày
+    - găng đấm boxing
+    - bình lắc
+    
+- synonym: người máy
+  examples: |
+    - máy
+    - robot
+    - rô bốt
+    - máy tính
+    - bot
+
+- synonym: tôi
+  examples: |
+    - mình
+    - tao
+    - tui
+    - ta
+    - t
+    
+- synonym: xem
+  examples: |
+    - đặt
+    - coi
+    - thuê
+    - tìm
+
+
+- synonym: muốn
+  examples: |
+    - ưng
+    - thích
+
+- synonym: bạn
+  examples: |
+    - you
+    - mày
+    - m
+
+- synonym: không
+  examples: |
+    - k
+    - hong
+    - ko
+    - kh
+
+

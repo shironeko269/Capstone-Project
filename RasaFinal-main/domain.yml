@@ -1,0 +1,212 @@
+version: "3.1"
+
+intents:
+  - bot_challenge
+  - ask_info_pitch
+  - ask_pitch_by_location
+  - ask_pitch_by_name_with_entity
+  - ask_pitch_by_name
+  - ask_pitch_by_location_with_entity
+  - ask_pitch_has_not_been_booked
+  - ask_pitch_has_not_been_booked_with_entity
+  - affirm
+  - deny
+  - thanks
+  - greet
+  - ask_weather
+  - ask_shopping
+  - ask_new_prodcuts
+  - ask_products_best_seller
+  - ask_products_by_category
+  - ask_detail_category_product
+  - ask_price
+  - ask_bot_can_do
+  - ask_promotion
+  - say_bye
+  - ask_time_ship_product
+
+
+entities:
+- pitch_name
+- location
+- thoi_gian_ngay
+- buoi_trong_ngay
+- product
+
+slots:
+  pitch_name:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: pitch_name
+
+  location:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: location
+
+  product:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: product
+
+  thoi_gian_ngay:
+    type: categorical
+    influence_conversation: true
+    values:
+    - hôm nay
+    - ngày mai
+    - ngày mốt
+    mappings:
+    - type: from_entity
+      entity: thoi_gian_ngay
+      
+  buoi_trong_ngay:
+    type: categorical
+    influence_conversation: true
+    values:
+    - sáng
+    - trưa
+    - chiều
+    - tối
+    mappings:
+    - type: from_entity
+      entity: buoi_trong_ngay
+
+
+responses:
+
+  utter_out_of_scope:
+  - text: Xin lỗi, tôi không hiểu ý bạn
+
+  utter_please_rephrase:
+  - text: Xin lỗi, tôi không hiểu ý bạn, bạn nói rõ hơn được không?
+
+  utter_default:
+  - text: Xin lỗi, tôi không hiểu ý bạn, bạn nói rõ hơn được không?
+
+  utter_price:
+  - text: |
+          Giá thuê mỗi sân bóng giao động từ 150.000vnđ - 400.000vnđ tuỳ thời gian và loại sân, 
+          để biết thêm chi tiết bạn vui lòng click vào link này: http://localhost:8080/booking
+  
+  utter_promotion:
+  - text: Hiện tại chúng tôi có chương trình khuyến mãi rút thăm trực tiếp tại sân để nhận quà. 
+            Nhanh tay đặt sân để nhận quà nhé.  
+
+  utter_time_ship_prodcut:
+  - text: Thời gian giao hàng trong nội thành Đà Nẵng dự kiến từ 1-2 ngày, những khu vực khác từ 3-5 ngày.
+
+  utter_bot_can_do:
+  - text: Tôi có thể hỗ trợ bạn những việc sau đây 
+    buttons:
+      - title: "Xem thông tin sân bóng"
+        payload: '/ask_info_pitch'
+      - title: "Hỏi mua sản phẩm"
+        payload: '/ask_shopping'   
+      - title: "Xem dự báo thời tiết"
+        payload: '/ask_weather'   
+
+  utter_greet:
+  - text: Xin chào, bạn đang cần gì ạ?
+    buttons:
+      - title: "Xem thông tin sân bóng"
+        payload: '/ask_info_pitch'
+      - title: "Hỏi mua sản phẩm"
+        payload: '/ask_shopping'   
+      - title: "Xem dự báo thời tiết"
+        payload: '/ask_weather' 
+
+  utter_i_am_a_bot:
+  - text: Tôi là robot, nhưng đôi khi tôi nghĩ tôi là con người ^^
+  - text: Tôi là người máy, tôi được tạo ra để hỗ trợ bạn xem thông tin trên trang web này
+
+  utter_show_3_options_to_find_pitch:
+  - text: Tôi có thể hỗ trợ bạn theo 3 cách sau
+    buttons:
+      - title: "Tìm sân bóng theo tên"
+        payload: '/ask_pitch_by_name'
+      - title: "Tìm sân bóng theo vị trí"
+        payload: '/ask_pitch_by_location'
+      - title: "Sân bóng hiện đang trống"
+        payload: '/ask_pitch_has_not_been_booked'  
+
+  utter_ask_name_pitch:
+  - text: Bạn muốn tìm sân bóng tên gì? 
+
+  utter_ask_location:
+  - text: Bạn muốn tìm sân bóng ở khu vực nào?
+
+  utter_ask_want_to_find_by_location:
+  - text: Bạn cũng có thể tìm sân bóng hiện còn trống theo khu vực
+
+  utter_ask_want_to_help_more:
+  - text: Bạn có muốn tôi giúp gì nữa không?
+    buttons:
+      - title: "Xem thông tin sân bóng"
+        payload: '/ask_info_pitch'
+      - title: "Hỏi mua sản phẩm"
+        payload: '/ask_shopping'   
+      - title: "Không"
+        payload: '/deny' 
+      - title: "Xem dự báo thời tiết"
+        payload: '/ask_weather' 
+
+  utter_ask_location_find_pitch_has_not_been_booked:
+  - text: Bạn muốn tìm sân bóng hiện đang còn trống ở khu vực nào?
+
+  utter_show_list_shopping:
+  - text: Ở trang web chúng tôi bán quần áo, giày và dụng cụ thể thao
+    buttons:
+      - title: "Sản phẩm theo danh mục"
+        payload: '/ask_products_by_category'
+      - title: "Các sản phẩm bán chạy"
+        payload: '/ask_products_best_seller'
+      - title: "Các sản phẩm mới nhất"
+        payload: '/ask_new_prodcuts'  
+
+  utter_ask_category:
+  - text: Bạn muốn tìm loại sản phẩm gì?
+
+  utter_thanks_customer_after_help:
+  - text: Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!
+
+  utter_bye:
+  - text: Tạm biệt và hẹn gặp lại! ^^
+
+  utter_ask_more_weather:
+  - text: Bạn có thể xem dự báo thời tiết vào ngày mai và ngày mốt
+    buttons:
+      - title: "Sáng mai"
+        payload: '/ask_weather{{"buoi_trong_ngay":"sáng", "thoi_gian_ngay": "ngày mai"}}'
+      - title: "Chiều mai"
+        payload: '/ask_weather{{"buoi_trong_ngay":"chiều", "thoi_gian_ngay": "ngày mai"}}'
+      - title: "Tối mai"
+        payload: '/ask_weather{{"buoi_trong_ngay":"tối", "thoi_gian_ngay": "ngày mai"}}'
+      - title: "Sáng mốt"
+        payload: '/ask_weather{{"buoi_trong_ngay":"sáng", "thoi_gian_ngay": "ngày mốt"}}'    
+      - title: "Chiều mốt"
+        payload: '/ask_weather{{"buoi_trong_ngay":"chiều", "thoi_gian_ngay": "ngày mốt"}}'
+      - title: "Tối mốt"
+        payload: '/ask_weather{{"buoi_trong_ngay":"tối", "thoi_gian_ngay": "ngày mốt"}}'
+      - title: "Không cần nữa"
+        payload: '/deny' 
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+
+actions:
+ - action_show_link_pitch
+ - action_show_link_pitch_in_location
+ - action_show_link_pitch_has_not_been_booked
+ - action_show_link_pitch_has_not_been_booked_with_entity
+ - action_show_link_product_by_category
+ - action_show_link_product_best_seller
+ - action_show_link_new_product
+ - action_weather

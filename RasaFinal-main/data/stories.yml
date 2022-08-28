@@ -1,0 +1,154 @@
+version: "3.1"
+
+stories:
+
+- story: greet
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- story: ask price
+  steps:
+  - intent: ask_price
+  - action: utter_price
+  - action: utter_ask_want_to_help_more
+
+- story: ask time ship product
+  steps:
+  - intent: ask_time_ship_product
+  - action: utter_time_ship_prodcut
+  - action: utter_ask_want_to_help_more
+
+- story: ask promotion
+  steps:
+  - intent: ask_promotion
+  - action: utter_promotion
+  - action: utter_ask_want_to_help_more
+
+- story: ask bot can do
+  steps:
+  - intent: ask_bot_can_do
+  - action: utter_bot_can_do
+
+- story: Ask info pitch
+  steps:
+  - intent: ask_info_pitch
+  - action: utter_show_3_options_to_find_pitch
+
+- story: The 1st options find pitch by name
+  steps:
+  - intent: ask_pitch_by_name
+  - action: utter_ask_name_pitch
+
+- story : Ask pitch by name with entity
+  steps:
+  - intent: ask_pitch_by_name_with_entity
+    entities:
+    - pitch_name: Bình Minh
+  - slot_was_set:
+    - pitch_name: Bình Minh
+  - action: action_show_link_pitch
+  - action: utter_ask_want_to_help_more
+
+
+- story: The 2st options find pitch by location
+  steps:
+  - intent: ask_pitch_by_location
+  - action: utter_ask_location
+
+- story : Ask pitch by location with entity
+  steps:
+  - intent: ask_pitch_by_location_with_entity
+    entities:
+    - location: Hoà Hải
+  - slot_was_set:
+    - location: Hoà Hải
+  - action: action_show_link_pitch_in_location
+  - action: utter_ask_want_to_help_more
+
+
+- story: The 3st options find pitch has not been booked - affirm
+  steps:
+  - intent: ask_pitch_has_not_been_booked
+  - action: action_show_link_pitch_has_not_been_booked
+  - action: utter_ask_want_to_find_by_location
+  - intent: affirm
+  - action: utter_ask_location_find_pitch_has_not_been_booked
+  - intent: ask_pitch_has_not_been_booked_with_entity
+    entities:
+    - location: Hoà Hải
+  - slot_was_set:
+    - location: Hoà Hải
+  - action: action_show_link_pitch_has_not_been_booked_with_entity
+  - action: utter_ask_want_to_help_more
+
+- story: The 3st options find pitch has not been booked - deny
+  steps:
+  - intent: ask_pitch_has_not_been_booked
+  - action: action_show_link_pitch_has_not_been_booked
+  - action: utter_ask_want_to_find_by_location
+  - intent: deny
+  - action: utter_ask_want_to_help_more
+
+- story : Ask pitch has not been booked with entity
+  steps:
+  - intent: ask_pitch_has_not_been_booked_with_entity
+    entities:
+    - location: Hoà Hải
+  - slot_was_set:
+    - location: Hoà Hải
+  - action: action_show_link_pitch_has_not_been_booked_with_entity
+  - action: utter_ask_want_to_help_more
+
+
+- story: Ask shopping
+  steps: 
+  - intent: ask_shopping
+  - action: utter_show_list_shopping
+
+- story: Ask shopping by category
+  steps: 
+  - intent: ask_products_by_category
+  - action: utter_ask_category
+  - intent: ask_detail_category_product
+    entities:
+    - product: áo
+  - slot_was_set:
+    - product: áo 
+  - action: action_show_link_product_by_category
+  - action: utter_ask_want_to_help_more
+
+- story: Ask shopping best seller
+  steps:
+  - intent: ask_products_best_seller
+  - action: action_show_link_product_best_seller
+  - action: utter_ask_want_to_help_more
+
+- story: Ask shopping new product
+  steps:
+  - intent: ask_new_prodcuts
+  - action: action_show_link_new_product
+  - action: utter_ask_want_to_help_more
+
+- story: Ask weather - deny
+  steps:
+  - intent: ask_weather
+  - action: action_weather
+  - action: utter_ask_more_weather
+  - intent: deny
+  - action: utter_ask_want_to_help_more
+
+- story: Ask weather - nextwork
+  steps:
+  - intent: ask_weather
+  - action: action_weather
+  - action: utter_ask_more_weather
+  - intent: ask_weather
+  - action: action_weather
+  - action: utter_ask_want_to_help_more
+
+- story: Customer dont want to help
+  steps:
+  - action: utter_ask_want_to_help_more
+  - intent: deny
+  - action: utter_thanks_customer_after_help
