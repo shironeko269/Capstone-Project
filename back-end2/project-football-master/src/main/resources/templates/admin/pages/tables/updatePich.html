@@ -1,0 +1,251 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/base.html}">
+
+<head>
+    <title>Add New Pitch</title>
+
+
+    <!-- Colorpicker Css -->
+    <link th:href="@{../../plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css}" rel="stylesheet"/>
+
+    <!-- Dropzone Css -->
+    <link th:href="@{../../plugins/dropzone/dropzone.css}" rel="stylesheet">
+
+    <!-- Multi Select Css -->
+    <link th:href="@{../../plugins/multi-select/css/multi-select.css}" rel="stylesheet">
+
+    <!-- Bootstrap Spinner Css -->
+    <link th:href="@{../../plugins/jquery-spinner/css/bootstrap-spinner.css}" rel="stylesheet">
+
+    <!-- Bootstrap Tagsinput Css -->
+    <link th:href="@{../../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css}" rel="stylesheet">
+
+    <!-- Bootstrap Select Css -->
+    <link th:href="@{../../plugins/bootstrap-select/css/bootstrap-select.css}" rel="stylesheet"/>
+
+    <!-- noUISlider Css -->
+    <link th:href="@{../../plugins/nouislider/nouislider.min.css}" rel="stylesheet"/>
+    <script>
+        $(document).ready(() => {
+            $("#pitch").addClass("active");
+            $("#add-new-pitch").addClass("active");
+        })
+    </script>
+
+</head>
+
+<body class="theme-red">
+
+<section class="content" layout:fragment="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Hệ Thống Quản Lí Sân Bóng Và Bán Phụ Kiện Thể Thao</h2>
+        </div>
+        <!-- Advanced Select -->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            Thêm mới sân bóng
+                        </h2>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
+                                   role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">more_vert</i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="javascript:void(0);">Action</a></li>
+                                    <li><a href="javascript:void(0);">Another action</a></li>
+                                    <li><a href="javascript:void(0);">Something else here</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="body">
+                        <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert"
+                             role="alert">
+                            <p class="text-center" th:text="${session.message.content}"></p>
+                            <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+                        </div>
+                        <form id="form_validation" th:action="@{/admin/add-new-pitch}" method="POST"
+                              th:object="${objFootballPitch}" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" th:field="*{name}" class="form-control" name="name"
+                                                   required>
+                                            <label class="form-label">Tên sân bóng</label>
+                                            <div class="alert alert-danger d-block"
+                                                 th:each="e : ${#fields.errors('name')} " th:text="${e}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <textarea name="description" th:field="*{description}" cols="30" rows="3"
+                                                      class="form-control no-resize" required></textarea>
+                                            <label class="form-label">Mô tả</label>
+                                            <div class="alert alert-danger d-block"
+                                                 th:each="e : ${#fields.errors('description')} " th:text="${e}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <p >
+                                                <b>Nhân viên</b>
+                                            </p>
+                                            <select  th:field="*{userId}" class="form-control show-tick">
+                                                <option th:each="item:${allUserRoleManagerAndUserId}" th:value="${item.id}"
+                                                        th:text="${item.userName}"
+                                                        th:selected="${item.id == objFootballPitch.userId}"
+                                                >Nguyen Van A
+                                                </option>
+
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <a href="#" th:href="@{/admin/add-manager}">
+                                                <div class="demo-google-material-icon"><i class="material-icons">mode_edit</i>
+                                                    Bạn có thể thêm mới nhân viên tại đây
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" th:field="*{userId}" class="form-control"
+                                                   name="streetNumber" required>
+                                            <label class="form-label">Đường dẫn google map tại đây </label>
+                                            <div class="alert alert-danger d-block"
+                                                 th:each="e : ${#fields.errors('userId')} " th:text="${e}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" th:field="*{urlMap}" class="form-control"
+                                                   name="streetNumber" required>
+                                            <label class="form-label">Đường dẫn google map tại đây </label>
+                                            <div class="alert alert-danger d-block"
+                                                 th:each="e : ${#fields.errors('urlMap')} " th:text="${e}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" th:field="*{streetNumber}" class="form-control"
+                                                   name="streetNumber" required>
+                                            <label class="form-label">Tên đường</label>
+                                            <div class="alert alert-danger d-block"
+                                                 th:each="e : ${#fields.errors('streetNumber')} " th:text="${e}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p>
+                                                <b>Quận</b>
+                                            </p>
+                                            <select id="cbb1" onchange="cbb1change()" class="form-control show-tick"
+                                                    data-target="receiver-district">
+                                                <option th:each="item:${districts}" th:value="${item.id}"
+                                                        th:text="${item.districtName}">Quận
+                                                </option>
+                                            </select>
+
+                                        </div>
+                                        <div class="col-md-12 mt-5">
+                                            <p>
+                                                <b>Địa chỉ</b>
+                                            </p>
+                                            <select id="cbb2" th:field="*{wardId}" class="form-control show-tick">
+                                                <option th:each="item:${wards}" th:classappend="${item.districtId}"
+                                                        th:value="${item.id}"
+                                                        th:text="' Phường : ' +${item.wardName}+ ' --- Quận : ' +${item.districtName} "
+                                                        th:selected="${item.id == objFootballPitch.wardId}"
+                                                >Hoa Hai
+                                                </option>
+                                            </select>
+                                            <!--                                                <select id="phuongxa" class="form-control show-tick">-->
+                                            <!--                                                    <option>Hoa Hai</option>-->
+                                            <!--                                                </select>-->
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <script>
+                                    function chooseFile(fileInput) {
+                                        if (fileInput.files && fileInput.files[0]) {
+                                            var reader = new FileReader();
+                                            reader.onload = function (e) {
+                                                $('#image').attr('src', e.target.result);
+                                            }
+                                            reader.readAsDataURL(fileInput.files[0]);
+                                        }
+                                    }
+                                </script>
+                                <div class="col-md-5">
+                                    <div class="form-group form-float">
+                                        <div class="form-group">
+                                            <label class="form-label">Ảnh</label>
+                                            <input onchange="chooseFile(this);" type="file" class="form-control"
+                                                   name="imageParam">
+                                        </div>
+                                    </div>
+                                    <img id="image"
+                                         src="http://placehold.it/500x300"
+                                         class="img-responsive"
+                                         alt=""
+                                         th:src="@{'/images/image-pitch/'+${objFootballPitch.image}}"
+                                    >
+                                </div>
+                            </div>
+                            <button class="btn btn-primary waves-effect" type="submit">Tiếp tục</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function cbb1change() {
+            var cbb1 = document.getElementById("cbb1");
+            var cbb1options = cbb1.options;
+            for (var i = 0; i < cbb1options.length; i++) {
+                var option = cbb1options[i];
+                if (option.selected == false) {
+                    var classHide = option.value;
+                    var optionsHide = document.getElementsByClassName("" + classHide + "");
+                    for (var idx2 = 0; idx2 < optionsHide.length; idx2++) {
+                        var optionHide = optionsHide[idx2];
+                        optionHide.selected = false;
+                        optionHide.style.display = "none";
+                    }
+                } else {
+                    var classShow = option.value;
+                    var optionsShow = document.getElementsByClassName("" + classShow + "");
+                    for (var idx2 = 0; idx2 < optionsShow.length; idx2++) {
+                        var optionShow = optionsShow[idx2];
+                        optionShow.style.display = "block";
+                    }
+                }
+            }
+
+
+            var innerHTMLCbb1 = document.getElementById("cbb1").innerHTML;
+            alert(valueCbb1);
+            alert(innerHTMLCbb1);
+        }
+    </script>
+</section>
+
+
+</body>
+
+</html>

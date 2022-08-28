@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{manager/base.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Thêm mới đơn đặt sân</title>
+
+    <!-- Colorpicker Css -->
+    <link th:href="@{../../plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css}" rel="stylesheet" />
+
+    <!-- Dropzone Css -->
+    <link th:href="@{../../plugins/dropzone/dropzone.css}" rel="stylesheet">
+
+    <!-- Multi Select Css -->
+    <link th:href="@{../../plugins/multi-select/css/multi-select.css}" rel="stylesheet">
+
+    <!-- Bootstrap Spinner Css -->
+    <link th:href="@{../../plugins/jquery-spinner/css/bootstrap-spinner.css}" rel="stylesheet">
+
+    <!-- Bootstrap Tagsinput Css -->
+    <link th:href="@{../../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css}" rel="stylesheet">
+
+    <!-- Bootstrap Select Css -->
+    <link th:href="@{../../plugins/bootstrap-select/css/bootstrap-select.css}" rel="stylesheet" />
+
+    <!-- noUISlider Css -->
+    <link th:href="@{../../plugins/nouislider/nouislider.min.css}" rel="stylesheet" />
+    <script>
+        $(document).ready(()=>{
+            $("#booking").addClass("active");
+            $("#add-booking").addClass("active");
+        })
+    </script>
+</head>
+
+<body class="theme-red">
+
+<section class="content" layout:fragment="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>
+                Hệ Thống Quản Lí Sân Bóng Và Bán Phụ Kiện Thể Thao
+            </h2>
+        </div>
+        <!-- Advanced Select -->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card" th:if="${managerNow}">
+                    <div class="header">
+                        <h2 >Danh sách sân nhỏ</h2>
+                    </div>
+                    <div class="body">
+<!--                        <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">-->
+<!--                            <p class="text-center" th:text="${session.message.content}"></p>-->
+<!--                            <th:block th:text="${#session.removeAttribute('message')}" ></th:block>-->
+<!--                        </div>-->
+                        <div class="result mt-2">
+<!--                            <label id="searchResultLabel" style="display: none"><i class="fas fa-search"></i> Danh sách tìm kiếm</label>-->
+<!--                            <h6 id="allSubPitch">Tất cả các sân bóng mini</h6>-->
+                            <div class="row" id="listSubPitchResult">
+                                <div class="col-sm-4 " th:each="subpitch:${listSubPitchDto}">
+                                    <div class="product-item btn-light">
+                                        <a href="">
+                                            <img th:src="'/images/image-subpitch/'+${subpitch.getImage1()}"
+                                                 style="width: 100%; height: 145px">
+                                        </a>
+                                        <div style="padding: 7px;">
+                                            <p></p>
+                                            <h6 th:text="${subpitch.getName()}" style="color: #1a6692;"></h6>
+                                            <h7 th:text="${subpitch.getPrice()}" style="color: #DC3545;"></h7>
+                                            <span style="color: #DC3545;"> đ/h</span>
+                                            <p style="font-weight: 400"><i class="fas fa-user"></i> <span
+                                                    th:text="${subpitch.getNameType()}"></span></p>
+                                            <a th:href="@{/user/booking/sub-pitch/{subPitchId} (subPitchId=${subpitch.getId()})}">
+                                                <button type="button" class="btn btn-outline-danger col-12">Đặt ngay</button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Validator({
+                    form: '#form_validation',
+                    formGroupSelector: '.form-group',
+                    errorSelector: '.form-message',
+                    rules: [
+                        Validator.isRequired('#name', 'Vui lòng nhập tên dịch vụ'),
+                        Validator.isCutManyBlankByService('#name'),
+                        Validator.minLength('#name', 1),
+                        Validator.maxLength('#name', 50),
+                        Validator.isRequired('#quantity', 'Vui lòng nhập số lượng'),
+                        Validator.isNumberGreaterThan0('#quantity'),
+                        Validator.minLength('#quantity', 1),
+                        Validator.isRequired('#price', 'Vui lòng nhập giá'),
+                        Validator.isNumberGreaterThan0('#price'),
+                        Validator.minLength('#price', 1),
+                        Validator.isRequired('#unit', 'Vui lòng nhập đơn vị đếm'),
+                        Validator.isBlank('#unit','Vui lòng nhập trường này'),
+                        Validator.minLength('#unit', 1),
+                        Validator.maxLength('#unit', 10)
+                    ],
+                });
+            });
+        </script>
+</section>
+
+</body>
+
+</html>

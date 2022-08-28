@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/base.html}">
+
+<head>
+    <title>Chi Tiết Đơn Hàng</title>
+
+    <!-- Colorpicker Css -->
+    <link th:href="@{../../plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css}" rel="stylesheet" />
+
+    <!-- Dropzone Css -->
+    <link th:href="@{../../plugins/dropzone/dropzone.css}" rel="stylesheet">
+
+    <!-- Multi Select Css -->
+    <link th:href="@{../../plugins/multi-select/css/multi-select.css}" rel="stylesheet">
+
+    <!-- Bootstrap Spinner Css -->
+    <link th:href="@{../../plugins/jquery-spinner/css/bootstrap-spinner.css}" rel="stylesheet">
+
+    <!-- Bootstrap Tagsinput Css -->
+    <link th:href="@{../../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css}" rel="stylesheet">
+
+    <!-- Bootstrap Select Css -->
+    <link th:href="@{../../plugins/bootstrap-select/css/bootstrap-select.css}" rel="stylesheet" />
+
+    <!-- noUISlider Css -->
+    <link th:href="@{../../plugins/nouislider/nouislider.min.css}" rel="stylesheet" />
+    <script>
+        $(document).ready(()=>{
+            $("#order-product").addClass("active");
+            $("#list-order-product").addClass("active");
+        })
+    </script>
+</head>
+
+<body class="theme-red">
+
+    <section class="content" layout:fragment="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>Hệ Thống Quản Lí Sân Bóng Và Bán Phụ Kiện Thể Thao</h2>
+            </div>
+            <!-- Advanced Select -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                               Thông tin chi tiết đơn hàng 1
+                            </h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body" th:if="${orderDetail}">
+                                <div class="row">
+                                    <div class="col-md-12" >
+                                        <h2 th:text="'Đơn Hàng '+${orderDetail.id}">Đơn Hàng 1</h2>
+                                        <div class="row">
+                                            <div class="col-md-6" th:text="'Người gửi: '+${orderDetail.userNameCreate}">
+                                                Người đặt:
+                                            </div>
+                                            <div class="col-md-6" th:text="'Người nhận: '+${orderDetail.userName}">
+                                                Người đặt:
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6" th:text="'Số điện thoại: '+${orderDetail.phone}">
+                                                Số điện thoại:
+                                            </div>
+                                            <div class="col-md-6" th:text="'Địa chỉ: '+${orderDetail.address}">
+                                                Địa chỉ:
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6" th:text="'Trạng thái đơn hàng: '+${orderDetail.statusName}">
+                                                Trạng thái đơn hàng:
+                                            </div>
+                                            <div class="col-md-6" th:text="'Ghi chú: '+${orderDetail.note}">
+                                                Ghi chú:
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6" th:text="'Thanh toán: '+${orderDetail.paymentOrderName}">
+                                                Phương thức thanh toán:
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h2 >Các sản phẩm</h2>
+                                    <div class="col-md-12" th:each="item:${listOrderDetail}">
+                                        <div class="row">
+                                            <div class="col-md-3" th:text="'Sản phẩm: '+${item.productName}">
+                                                Sản phẩm:Áo
+                                            </div>
+                                            <div class="col-md-3" th:text="'Số lượng: '+${item.quantity}">
+                                                Số lượng:12 cái
+                                            </div>
+                                            <div class="col-md-3" th:text="'Giá: '+${#numbers.formatDecimal(item.price,0,'COMMA', 0, 'POINT')}+' đ'">
+                                                Giảm giá:12%
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <h4 th:text="'Tổng giá tiền: '+${#numbers.formatDecimal(orderDetail.totalPrice,0,'COMMA', 0, 'POINT')}+' đ'">Tổng giá tiền : 120 VND</h4>
+                                <a class="btn btn-primary waves-effect" style="margin-top: 25px" href="#"
+                                   th:href="@{'/admin/list-order'}">Trở lại
+                                </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        function chooseFile(fileInput) {
+            if (fileInput.files && fileInput.files[0]){
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#image').attr('src',e.target.result);
+                }
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+    </script>
+
+</body>
+
+</html>

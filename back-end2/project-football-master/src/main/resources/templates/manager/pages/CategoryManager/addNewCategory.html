@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{manager/base.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Add New Category</title>
+
+    <!-- Colorpicker Css -->
+    <link th:href="@{../../plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css}" rel="stylesheet" />
+
+    <!-- Dropzone Css -->
+    <link th:href="@{../../plugins/dropzone/dropzone.css}" rel="stylesheet">
+
+    <!-- Multi Select Css -->
+    <link th:href="@{../../plugins/multi-select/css/multi-select.css}" rel="stylesheet">
+
+    <!-- Bootstrap Spinner Css -->
+    <link th:href="@{../../plugins/jquery-spinner/css/bootstrap-spinner.css}" rel="stylesheet">
+
+    <!-- Bootstrap Tagsinput Css -->
+    <link th:href="@{../../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css}" rel="stylesheet">
+
+    <!-- Bootstrap Select Css -->
+    <link th:href="@{../../plugins/bootstrap-select/css/bootstrap-select.css}" rel="stylesheet" />
+
+    <!-- noUISlider Css -->
+    <link th:href="@{../../plugins/nouislider/nouislider.min.css}" rel="stylesheet" />
+    <script>
+        $(document).ready(()=>{
+            $("#category").addClass("active");
+            $("#add-category-service").addClass("active");
+        })
+    </script>
+</head>
+
+<body class="theme-red">
+
+    <section class="content" layout:fragment="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>
+                    Hệ Thống Quản Lí Sân Bóng Và Bán Phụ Kiện Thể Thao
+                </h2>
+            </div>
+            <!-- Advanced Select -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2 th:if="${objCategoryService.isEdit}">Sửa thể loại</h2>
+                            <h2 th:unless="${objCategoryService.isEdit}">Thêm mới thể loại</h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+                                <p class="text-center" th:text="${session.message.content}"></p>
+                                <th:block th:text="${#session.removeAttribute('message')}" ></th:block>
+                            </div>
+                            <form id="form_validation" th:action="@{/manager/add-category}" method="POST" th:object="${objCategoryService}">
+                                <input type="hidden" th:field="*{isEdit}">
+                                <input type="hidden" th:field="*{id}" class="form-control" name="id">
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input th:field="*{name}" type="text" class="form-control" id="name" name="name">
+                                        <span class="form-message" style="color: red;"></span>
+                                        <label class="form-label">Tên thể loại</label>
+                                        <div class="alert alert-danger d-block" th:each="e : ${#fields.errors('name')} " th:text="${e}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="margin-left: 1px" class="row">
+                                    <a class="btn btn-primary waves-effect" th:if="${objCategoryService.isEdit}"
+                                       href="#" th:href="@{'/manager/list-category/'}">Trở lại
+                                    </a>
+                                    <button class="btn btn-primary waves-effect" type="submit">Hoàn thành</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Validator({
+                    form: '#form_validation',
+                    formGroupSelector: '.form-group',
+                    errorSelector: '.form-message',
+                    rules: [
+                        Validator.isRequired('#name', 'Vui lòng nhập tên thể loại'),
+                        Validator.isCutManyBlankByService('#name'),
+                        Validator.minLength('#name', 1),
+                        Validator.maxLength('#name', 20),
+                    ],
+                });
+            });
+        </script>
+    </section>
+
+</body>
+
+</html>

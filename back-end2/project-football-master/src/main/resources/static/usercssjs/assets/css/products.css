@@ -1,0 +1,97 @@
+
+.container1 {
+    margin-top: 1%;
+    width: 100%;
+}
+.input-group {
+    width: 60%;
+    margin-left: 20%;
+}
+.searchProduct {
+    font-family: inherit;
+    
+    
+}
+.form-check {
+    margin-top: 5%;
+}
+.showProduct {
+    float: left;
+    
+}
+.tong {
+    
+    
+    margin: 3%;
+}
+.tong1 {
+    
+    width: 15%;
+    
+}
+.tong2 {
+    margin-left: 1%;
+    width: 84%;
+    
+}
+
+.pagination {
+    margin-left: 50%;
+    
+}
+/* Product Page */
+
+
+
+.container1 .filters {
+	text-align: center;
+	border-bottom: 1px solid #eee;
+	padding-bottom: 10px;
+	margin-bottom: 60px;
+}
+
+.container1 .filters li {
+	text-transform: uppercase;
+	font-size: 13px;
+	font-weight: 700;
+	color: #121212;
+	display: inline-block;
+	margin: 0px 10px;
+	transition: all .3s;
+	cursor: pointer;
+}
+
+.container1 .filters ul li.active,
+.container1 .filters ul li:hover {
+  color: #f33f3f;
+}
+
+.container1 ul.pages {
+	
+	text-align: center;
+}
+
+.container1 ul.pagination li {
+	display: inline-block;
+	margin: 0px 2px;
+}
+
+.container1 ul.pagination li a {
+	width: 44px;
+	height: 44px;
+	display: inline-block;
+	line-height: 42px;
+	border: 1px solid #eee;
+	font-size: 15px;
+	font-weight: 700;
+	color: #121212;
+	transition: all .3s;
+    text-align: center;
+}
+
+.container1 ul.pagination li a:hover,
+.container1 ul.pagination li.active a {
+	background-color: #f33f3f;
+	border-color: #f33f3f;
+	color: #fff;
+}

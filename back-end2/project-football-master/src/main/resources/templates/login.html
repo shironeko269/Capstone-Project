@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Yotsuba</title>
+  <link rel="shortcut icon" th:href="@{/images/logo.svg}">
+    <link th:href="@{/usercssjs/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/usercssjs/vendor/bootstrap/css/bootstrap.search.css}" rel="stylesheet">
+    <!-- Font Icon -->
+    <link rel="stylesheet" th:href="@{usercssjs/fonts/material-icon/css/material-design-iconic-font.min.css}">
+    <link rel="stylesheet" th:href="@{usercssjs/assets/fonts/material-icon/css/material-design-iconic-font.min.css}">
+
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css}">
+
+
+    <!-- Main css -->
+    <link rel="stylesheet" th:href="@{usercssjs/assets/css/style.css}">
+</head>
+<body style="background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.5) 50%),
+      url('https://images.pexels.com/photos/158780/leaf-nature-green-spring-158780.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500');" >
+
+
+    <div class="custom-main">
+        <!-- Sing in  Form -->
+        <section class="sign-in">
+            <div class="container">
+                <div class="signin-content">
+                    <div class="signin-image">
+                        <a title="trở về trang chủ" href="#" th:href="@{/index}">
+                            <figure ><img src="../../usercssjs/assets/images/StoneDevil.jpg" alt="sing up image"></figure>
+                        </a>
+                        <a href="#" th:href="@{/register}" class="signup-image-link">TẠO TÀI KHOẢN MỚI</a>
+                    </div>
+
+                    <div class="signin-form">
+                        <img src="../../usercssjs/assets/images/DANGNHAP1.png" alt="" style="margin-bottom: 20px">
+                        <div th:if="${param.error}" class="alert alert-danger">
+                            Sai tài khoản hoặc mật khẩu
+                        </div>
+                        <div th:if="${param.accessDenied}" class="alert alert-danger">
+                            Bạn phải đăng nhập
+                        </div>
+                        <div th:if="${param.logout}" class="alert alert-danger">
+                            Bạn đã đăng xuất
+                        </div>
+                        <div th:if="${param.change}" class="alert alert-success">
+                            <p th:text="${param.change}"></p>
+                        </div>
+                        <form method="POST" class="register-form" id="login-form" th:action="@{/dologin}">
+                            <div class="form-group">
+                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="username" id="your_name" placeholder="NHẬP TÊN BẠN"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="password" id="your_pass" placeholder="NHẬP MẬT KHẢU"/>
+                            </div>
+<!--                            <div class="form-group">-->
+<!--                                <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />-->
+<!--                                <label for="remember-me" class="label-agree-term"><span><span></span></span>GHI NHỚ ĐIỀU NÀY</label>-->
+<!--                            </div>-->
+                            <div class="form-group form-button">
+                                    <input type="submit" name="signin" id="signin" class="form-submit" value="ĐĂNG NHẬP"/>
+                            </div>
+                            <div class="form-group form-button">
+                                <a href="#" th:href="@{/forgot}">Quên mật khẩu</a>
+                            </div>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                        </form>
+                        <div class="social-login">
+                            <span class="social-label">HOẶC ĐĂNG NHẬP VỚI</span>
+                            <ul class="socials">
+                                <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                                <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
+                                <li><a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/login-google&response_type=code
+    &client_id=59048210969-nd3uaoaoj85eu996p6vlu5338174ncb8.apps.googleusercontent.com&approval_prompt=force"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <!-- JS -->
+    <script th:src="@{user/vendor/jquery/jquery.min1.js}"></script>
+    <script th:src="@{user/assets/js/main.js}"></script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>

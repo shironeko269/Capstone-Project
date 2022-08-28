@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+        rel="stylesheet">
+  <title>Yotsuba</title>
+  <link rel="shortcut icon" th:href="@{/images/logo.svg}">
+  <link th:src="@{../../usercssjs/assets/css/styles1.css}" rel="stylesheet" />
+  <link th:href="@{../../usercssjs/assets/css/styles1.css}" rel="stylesheet" />
+  <script>
+    $(document).ready(() => {
+      $("#home-active").removeClass("active");
+      $("#profile-active").addClass("active");
+    })
+
+  </script>
+</head>
+
+<body>
+<div class="d-flex" id="wrapper" layout:fragment="content"  th:if="${profile}" >
+  <!-- Sidebar-->
+
+  <div class="border-end bg-white"  id="sidebar-wrapper" >
+    <div class="sidebar-heading border-bottom badge-danger"><i class="fas fa-key" style=""></i>TÀI KHOẢN CỦA TÔI</div>
+    <div class="list-group list-group-flush">
+      <a class="list-group-item list-group-item-action list-group-item-light p-3 active" th:href="@{/user/profile}" ><i  class="fas fa-id-card" style="margin-right: 5%;"></i>HỒ SƠ</a>
+      <a class="list-group-item list-group-item-action list-group-item-light p-3 "
+         th:href="@{/user/change-password}" ><i class="fas fa-unlock-alt" style="margin-right: 5%;" ></i>THAY ĐỔI MẬT KHẨU</a>
+
+    </div>
+    <div class="border-end bg-white">
+      <div class="list-group list-group-flush">
+        <a class="list-group-item list-group-item-action list-group-item-light p-3"
+           th:href="@{'/user/history-invoice/'+${profile.id}}" href="#"><i class="fas fa-file-invoice-dollar" style="margin-right: 5%;"></i>LỊCH SỬ ĐẶT HÀNG</a>
+      </div>
+      <div class="list-group list-group-flush">
+        <a class="list-group-item list-group-item-action list-group-item-light p-3"
+           th:href="@{/user/history-invoice-booking}" href="#"><i class="fas fa-file-invoice-dollar" style="margin-right: 5%;"></i>LỊCH SỬ ĐẶT SÂN</a>
+      </div>
+    </div>
+  </div>
+
+  <style type="text/css">
+    .col-lg-4{
+      font-weight: bold;
+      color: lightblue;
+    }
+    .col-lg-8{
+      font-weight: bold;
+    }
+
+
+  </style>
+  <!-- Page content wrapper-->
+
+  <div id="page-content-wrapper">
+    <button class="btn btn-outline-danger" id="sidebarToggle" onclick="change();" >
+      <i class="fas fa-exchange-alt"></i>
+    </button>
+    <!--    <a class="btn btn-outline-danger" id="sidebarToggle">-->
+    <!--      <span id="changee">Change Password</span>-->
+    <!--      <span id="change" style="display: none;">Hide Password</span>-->
+    <!--    </a>-->
+    <!-- Top navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom" style="margin-left: 20px;">
+      <div class="container-fluid"  style="margin-left:20px;">
+
+        <div  class="row col-lg-12" >
+
+          <div class="col-lg-9">
+            <div class="section-heading" style="">
+              <h2 style="color:#24b807;margin-left: 10px;font-weight: bold;">HỒ SƠ CỦA TÔI</h2>
+            </div>
+
+            <div class="col-lg-12 row" >
+              <div class="col-lg-3">
+                <img th:src="@{../../usercssjs/assets/images/StoneDevil.jpg}" style="width: 200px ;  height: 150px ;float: left;">
+              </div>
+              <div class="col-lg-9">
+                <label class="col-lg-4" for="name">HỌ VÀ TÊN: </label><a th:text="${profile.fullName}" class="col-lg-8"  type="text" id="name"></a><br>
+
+                <label class="col-lg-4" for="email">EMAIL: </label><a th:text="${profile.gmail}" class="col-lg-8"  type="text" id="email"></a><br>
+
+                <label class="col-lg-4" for="phone">SỐ ĐT: </label>
+                <a th:text="${profile.phone}" class="col-lg-8" type="text" id="phone"></a>
+                <br>
+
+                <label class="col-lg-4" for="address">ĐỊA CHỈ: </label><a th:text="${profile.address}"  class="col-lg-8"  type="text" id="address"> </a> <br>
+                <div class="col-lg-12 row">
+                  <label class="col-lg-4" >THÀNH VIÊN: </label>
+                  <div class="col-lg-8" th:switch="${profile.isMemberId}" >
+                    <p style=" margin-left: 10px;;font-weight: bold;color: gray" th:case="1">Chưa là thành viên</p>
+                    <p style=" margin-left: 10px;;font-weight: bold;color: red" th:case="2">Đã Là Thành viên</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div style="float: left; margin-top: 2%;" class="col-lg-3">
+
+            <img style="width: 250px; height: 250px" th:src="@{'/images/avt-user/'+${profile.image}}" alt="avatar">
+            <br>
+            <div class="form-group col-lg-8 row-cols-lg-2" style="margin-top: 2%;margin-left: 4px" >
+              <!--              <a th:href="@{/user/edit-profile}">-->
+              <a href="#" th:href="@{'/user/edit-profile/'+${profile.id}}">
+
+                <button type="button" class="btn btn-outline-info " style="width: 200px;">CHỈNH SỬA THÔNG TIN</button>
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+
+      </div>
+
+    </nav>
+    <!-- Page content-->
+  </div>
+</div>
+<script type="text/javascript">
+  // $(document).ready(function(){
+  //   $('#sidebarToggle').click(function() {
+  //     $('span',this).toggle();
+  //     // $('#idHideShowPass').toggle('slow');
+  //   });
+  // })
+
+  function change()
+  {
+    document.getElementById("sidebarToggle").innerHTML = 'changed';
+  }
+</script>
+</body>
+
+</html>

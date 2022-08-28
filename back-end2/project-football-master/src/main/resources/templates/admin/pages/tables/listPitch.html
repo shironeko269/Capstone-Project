@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/base.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>List Pitch</title>
+
+    <!-- JQuery DataTable Css -->
+    <link th:href="@{../../plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css}" rel="stylesheet">
+    <!-- Sweetalert Css -->
+    <link th:href="@{../../plugins/sweetalert/sweetalert.css}" rel="stylesheet" />
+    <script>
+        $(document).ready(()=>{
+            $("#pitch").addClass("active");
+            $("#list-pitch").addClass("active");
+        })
+    </script>
+</head>
+
+<body class="theme-red">
+
+    <section class="content" layout:fragment="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>
+                    Hệ Thống Quản Lí Sân Bóng Và Bán Phụ Kiện Thể Thao
+                </h2>
+            </div>
+            <!-- Basic Examples -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                               Danh sách sân bóng
+                            </h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Tên sân bóng</th>
+                                            <th>Ảnh</th>
+                                            <th>Nhân viên</th>
+                                            <th>Đường</th>
+                                            <th>Quận</th>
+                                            <th>Phường</th>
+                                            <th>Bản đồ</th>
+                                            <th>Sửa</th>
+                                            <th>Xóa</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Tên sân bóng</th>
+                                            <th>Ảnh</th>
+                                            <th>Nhân viên</th>
+                                            <th>Đường</th>
+                                            <th>Quận</th>
+                                            <th>Phường</th>
+                                            <th>Bản đồ</th>
+                                            <th>Sửa</th>
+                                            <th>Xóa</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <tr th:each="item,iStat:${footBallPitchDtoListBig}">
+                                            <td th:text="${iStat.index+1}">1</td>
+                                            <td><a href="#" th:href="@{'/admin/list-sub-pitch/'+${item.id}}" th:text="${item.name}">Sân Tuyên Sơn</a></td>
+                                            <td><div class="image">
+                                                <img src="../../images/user.png"
+                                                     th:src="@{'/images/image-pitch/'+${item.image}}" width="48" height="48"
+                                                     alt="User" />
+                                            </div></td>
+                                            <td th:text="${item.managerFullName}">Edinburgh</td>
+                                            <td th:text="${item.streetNumber}">61</td>
+                                            <td th:text="${item.districtName}"></td>
+                                            <td th:text="${item.wardName}">123</td>
+                                            <td>
+                                                <a href="" data-toggle="modal" data-target="#exampleModal">TRÊN BẢN ĐỒ</a></span></p>
+                                                <!-- Modal -->
+                                                <div  style="width: 1400px; height: 630px; padding-right: 100px;" class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div  class="modal-dialog" role="document">
+                                                        <div style="width: 700px; height: 630px;" class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body" th:utext="${item.urlMap}" >
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td> 
+                                                <a href="#" th:href="@{'/admin/update-pitch/'+${item.id}}">
+                                                    <div class="demo-google-material-icon"> <i class="material-icons">mode_edit</i> </div>
+                                                </a>
+                                            </td>
+                                            <td> 
+                                                <a href="#"
+                                                   th:data-id="${item.id}" th:data-name="${item.name}"
+                                                   onclick="showCancelMessage(this.getAttribute('data-id'),this.getAttribute('data-name'))">
+                                                    <div class="demo-google-material-icon"> <i class="material-icons">delete</i></div>
+                                                </a>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                                <script>
+                                    //tao
+                                    function showCancelMessage(id,name) {
+                                        swal({
+                                            title: "Bạn chắc chắn?",
+                                            text: "Bạn sẽ không thể khôi phục tệp này!",
+                                            type: "warning",
+                                            showCancelButton: true,
+                                            confirmButtonColor: "#DD6B55",
+                                            confirmButtonText: "Có, Tôi muốn xóa!",
+                                            cancelButtonText: "Không, Bỏ xóa plx!",
+                                            closeOnConfirm: false,
+                                            closeOnCancel: false
+                                        }, function (isConfirm) {
+                                            if (isConfirm) {
+                                                swal("Đã xóa!", "Sân đã được xóa thành công", "success");
+                                                deleteNew(id);
+                                            } else {
+                                                swal("Hủy xóa", "Bạn đã hủy xóa sân :)", "error");
+                                            }
+                                        });
+                                    }
+                                    function deleteNew(data) {
+
+                                        $.ajax({
+                                            url: '/admin/delete-pitch/'+data,
+                                            type: 'DELETE',
+                                            success: function (result) {
+                                                setTimeout('location.reload()', 2345);
+                                            },
+                                            error: function (error) {
+                                                window.location.href = "/admin/list-pitch";
+                                            }
+                                        });
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap Notify Plugin Js -->
+        <script th:src="@{../../plugins/bootstrap-notify/bootstrap-notify.js}"></script>
+        <!-- SweetAlert Plugin Js -->
+        <script th:src="@{../../plugins/sweetalert/sweetalert.min.js}"></script>
+        <script th:src="@{../../js/pages/ui/dialogs.js}"></script>
+    </section>
+
+</body>
+
+</html>

@@ -1,0 +1,345 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/base.html}">
+
+<head>
+    <title>Account Admin</title>
+    <!-- Colorpicker Css -->
+    <link th:href="@{../../plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css}" rel="stylesheet"/>
+
+    <!-- Dropzone Css -->
+    <link th:href="@{../../plugins/dropzone/dropzone.css}" rel="stylesheet">
+
+    <!-- Multi Select Css -->
+    <link th:href="@{../../plugins/multi-select/css/multi-select.css}" rel="stylesheet">
+
+    <!-- Bootstrap Spinner Css -->
+    <link th:href="@{../../plugins/jquery-spinner/css/bootstrap-spinner.css}" rel="stylesheet">
+
+    <!-- Bootstrap Tagsinput Css -->
+    <link th:href="@{../../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css}" rel="stylesheet">
+
+    <!-- Bootstrap Select Css -->
+    <link th:href="@{../../plugins/bootstrap-select/css/bootstrap-select.css}" rel="stylesheet"/>
+
+    <!-- noUISlider Css -->
+    <link th:href="@{../../plugins/nouislider/nouislider.min.css}" rel="stylesheet"/>
+    <script>
+        $(document).ready(() => {
+            $("#admin-page").addClass("active");
+            $("#admin-page-account").addClass("active");
+        })
+    </script>
+</head>
+
+<body class="theme-red">
+
+<section class="content" layout:fragment="content">
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-xs-12 col-sm-12">
+                <div class="card">
+                    <div class="body">
+                        <div th:if="${session.message}" class="container">
+                            <div th:classappend="${'alert-'+session.message.type}" class="alert text-center"
+                                 role="alert">
+                                <span th:text="${session.message.content}"></span>
+                            </div>
+                            <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+                        </div>
+                        <div>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
+                                                                          data-toggle="tab">Thêm mới quản trị</a></li>
+                                <li role="presentation"><a href="#change_password_settings" aria-controls="settings"
+                                                           role="tab" data-toggle="tab">Thay đổi mật khẩu</a></li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade in active" id="home">
+                                    <div class="panel panel-default panel-post">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <form id="form_validation" th:action="@{/admin/add-admin}"
+                                                          th:object="${objAddAdmin}" method="post"
+                                                          enctype="multipart/form-data">
+                                                        <div class="col-md-7">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group form-float">
+                                                                        <div class="form-line">
+                                                                            <input type="text" th:field="*{userName}"
+                                                                                   class="form-control" id="username"
+                                                                                   name="username">
+                                                                            <label class="form-label">Tên đăng
+                                                                                nhập</label>
+                                                                            <div class="alert alert-danger d-block"
+                                                                                 th:each="e : ${#fields.errors('userName')} "
+                                                                                 th:text="${e}">
+                                                                            </div>
+                                                                            <span class="form-message"
+                                                                                  style="color: red;"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group form-float">
+                                                                        <div class="form-line">
+                                                                            <input type="text" th:field="*{fullName}"
+                                                                                   class="form-control" name="fullName"
+                                                                                   id="fullName"
+                                                                            >
+                                                                            <label class="form-label">Tên đầy đủ</label>
+                                                                            <div class="alert alert-danger d-block"
+                                                                                 th:each="e : ${#fields.errors('fullName')} "
+                                                                                 th:text="${e}">
+                                                                            </div>
+                                                                            <span class="form-message"
+                                                                                  style="color: red;"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group form-float">
+                                                                        <div class="form-line">
+                                                                            <input type="password"
+                                                                                   th:field="*{password}"
+                                                                                   class="form-control" id="password"
+                                                                                   name="password">
+                                                                            <label class="form-label">Mật khẩu</label>
+                                                                            <div class="alert alert-danger d-block"
+                                                                                 th:each="e : ${#fields.errors('password')} "
+                                                                                 th:text="${e}">
+                                                                            </div>
+                                                                            <span class="form-message"
+                                                                                  style="color: red;"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group form-float">
+                                                                        <div class="form-line">
+                                                                            <input type="password" class="form-control"
+                                                                                   id="password_confirmation"
+                                                                                   name="password_confirmation">
+                                                                            <label class="form-label">Nhập lại mật
+                                                                                khẩu</label>
+                                                                            <span class="form-message"
+                                                                                  style="color: red;"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group form-float">
+                                                                <div class="form-line">
+                                                                    <input type="email" th:field="*{gmail}"
+                                                                           class="form-control" name="email" id="email"
+                                                                    >
+                                                                    <label class="form-label">Email</label>
+                                                                    <div class="alert alert-danger d-block"
+                                                                         th:each="e : ${#fields.errors('gmail')} "
+                                                                         th:text="${e}">
+                                                                    </div>
+                                                                    <span class="form-message"
+                                                                          style="color: red;"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group form-float">
+                                                                        <div class="form-line">
+                                                                            <input type="text" th:field="*{phone}"
+                                                                                   class="form-control"
+                                                                                   name="phone" id="phone">
+                                                                            <label class="form-label">Số điện
+                                                                                thoại</label>
+                                                                            <div class="alert alert-danger d-block"
+                                                                                 th:each="e : ${#fields.errors('phone')} "
+                                                                                 th:text="${e}">
+                                                                            </div>
+                                                                            <span class="form-message"
+                                                                                  style="color: red;"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group form-float">
+                                                                        <div class="form-line">
+                                                                            <input type="text" th:field="*{address}"
+                                                                                   class="form-control"
+                                                                                   name="address" id="address">
+                                                                            <label class="form-label">Địa chỉ</label>
+                                                                            <div class="alert alert-danger d-block"
+                                                                                 th:each="e : ${#fields.errors('address')} "
+                                                                                 th:text="${e}">
+                                                                            </div>
+                                                                            <span class="form-message"
+                                                                                  style="color: red;"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <button class="btn btn-primary waves-effect"
+                                                                            type="submit">Hoàn
+                                                                        thành
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <script>
+                                                            function chooseFile(fileInput) {
+                                                                if (fileInput.files && fileInput.files[0]) {
+                                                                    var reader = new FileReader();
+                                                                    reader.onload = function (e) {
+                                                                        $('#image').attr('src', e.target.result);
+                                                                    }
+                                                                    reader.readAsDataURL(fileInput.files[0]);
+                                                                }
+                                                            }
+                                                        </script>
+                                                        <div class="col-md-5">
+                                                            <div class="form-group form-float">
+                                                                <div class="form-group">
+                                                                    <label class="form-label">Ảnh</label>
+                                                                    <input onchange="chooseFile(this);" type="file"
+                                                                           class="form-control" name="imageAdmin">
+                                                                </div>
+                                                            </div>
+                                                            <img id="image"
+                                                                 src="http://placehold.it/500x300"
+                                                                 class="img-custom-responsive"
+                                                                 alt=""
+                                                                 width="400" height="300"
+                                                            >
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade in" id="change_password_settings">
+                                    <form class="form-horizontal" th:action="@{/admin/change-password}" method="post"
+                                          id="change_password">
+                                        <div class="form-group">
+                                            <label for="passwordOld" class="col-sm-3 control-label">Mật khẩu cũ</label>
+                                            <div class="col-sm-9">
+                                                <div class="form-line">
+                                                    <input type="password" class="form-control" id="passwordOld"
+                                                           name="passwordOld" placeholder="Mật khẩu cũ">
+                                                    <span class="form-message" style="color: red;"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="passwordNew" class="col-sm-3 control-label">Mật khẩu mới</label>
+                                            <div class="col-sm-9">
+                                                <div class="form-line">
+                                                    <input type="password" class="form-control" id="passwordNew"
+                                                           name="passwordNew" placeholder="Mật khẩu mới">
+                                                    <span class="form-message" style="color: red;"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password_confirmation_new" class="col-sm-3 control-label">Mật
+                                                khẩu mới (Xác nhận)</label>
+                                            <div class="col-sm-9">
+                                                <div class="form-line">
+                                                    <input type="password" class="form-control"
+                                                           id="password_confirmation_new"
+                                                           name="password_confirmation_new"
+                                                           placeholder="Mật khẩu mới (Xác nhận)">
+                                                    <span class="form-message" style="color: red;"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-3 col-sm-9">
+                                                <button type="submit" class="btn btn-danger">SUBMIT</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mong muốn của chúng ta
+            Validator({
+                form: '#change_password',
+                formGroupSelector: '.form-group',
+                errorSelector: '.form-message',
+                rules: [
+                    Validator.minLength('#passwordNew', 8),
+                    Validator.isBlank('#passwordNew', 'Mật khẩu không có khoảng cách!'),
+                    Validator.isPassword('#passwordNew'),
+                    Validator.isRequired('#password_confirmation_new'),
+                    Validator.isConfirmed('#password_confirmation_new', function () {
+                        return document.querySelector('#change_password #passwordNew').value;
+                    }, 'Mật khẩu nhập lại không chính xác'),
+                ],
+            });
+
+
+            Validator({
+                form: '#form_validation',
+                formGroupSelector: '.form-group',
+                errorSelector: '.form-message',
+                rules: [
+                    //ten dang nhap
+                    Validator.isRequired('#username', 'Vui lòng nhập tên đăng nhập của bạn'),
+                    Validator.minLength('#username', 5),
+                    Validator.maxLength('#username', 20),
+                    Validator.isBlank('#username', 'Tên đăng nhập không có khoảng cách'),
+                    Validator.isNotCharacterSpecial('#username'),
+                    //ten day du
+                    Validator.isRequired('#fullName', 'Vui lòng nhập tên đầy đủ của bạn'),
+                    Validator.minLength('#fullName', 5),
+                    Validator.maxLength('#fullName', 30),
+                    Validator.isCutManyBlankByFullName('#fullName'),
+                    //so dien thoại
+                    Validator.isRequired('#phone', 'Vui lòng nhập số điện thoại của bạn'),
+                    Validator.minLength('#phone', 10),
+                    Validator.maxLength('#phone', 10),
+                    Validator.isPhone('#phone'),
+                    Validator.isBlank('#phone', 'Số điện thoại không có khoảng cách'),
+                    //email
+                    Validator.isEmail('#email'),
+                    Validator.isBlank('#email', 'Email không có khoảng cách!'),
+                    //password
+                    Validator.minLength('#password', 8),
+                    Validator.isBlank('#password', 'Mật khẩu không có khoảng cách!'),
+                    Validator.isPassword('#password'),
+                    //otp
+                    //Validator.isRequired('#otp', 'Vui lòng nhập mã OTP của bạn'),
+                    //Validator.minLength('#otp', 8),
+                    //Validator.maxLength('#otp', 8),
+                    //address
+                    Validator.minLength('#address', 5),
+                    Validator.maxLength('#address', 40),
+                    Validator.isCutManyBlankByAddress('#address'),
+                    Validator.isRequired('#password_confirmation'),
+                    Validator.isConfirmed('#password_confirmation', function () {
+                        return document.querySelector('#form_validation #password').value;
+                    }, 'Mật khẩu nhập lại không chính xác'),
+                ],
+            });
+        });
+    </script>
+</section>
+</body>
+
+</html>

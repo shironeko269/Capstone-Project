@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/base.html}">
+
+<head>
+    <title>Thêm Mới Thể Loại</title>
+
+    <!-- Colorpicker Css -->
+    <link th:href="@{../../plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css}" rel="stylesheet" />
+
+    <!-- Dropzone Css -->
+    <link th:href="@{../../plugins/dropzone/dropzone.css}" rel="stylesheet">
+
+    <!-- Multi Select Css -->
+    <link th:href="@{../../plugins/multi-select/css/multi-select.css}" rel="stylesheet">
+
+    <!-- Bootstrap Spinner Css -->
+    <link th:href="@{../../plugins/jquery-spinner/css/bootstrap-spinner.css}" rel="stylesheet">
+
+    <!-- Bootstrap Tagsinput Css -->
+    <link th:href="@{../../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css}" rel="stylesheet">
+
+    <!-- Bootstrap Select Css -->
+    <link th:href="@{../../plugins/bootstrap-select/css/bootstrap-select.css}" rel="stylesheet" />
+
+    <!-- noUISlider Css -->
+    <link th:href="@{../../plugins/nouislider/nouislider.min.css}" rel="stylesheet" />
+    <script>
+        $(document).ready(()=>{
+            $("#product").addClass("active");
+            $("#add-new-category-product").addClass("active");
+        })
+    </script>
+</head>
+
+<body class="theme-red">
+
+    <section class="content" layout:fragment="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>Hệ Thống Quản Lí Sân Bóng Và Bán Phụ Kiện Thể Thao</h2>
+            </div>
+            <!-- Advanced Select -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                Thêm mới thể loại
+                            </h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+                                <p class="text-center" th:text="${session.message.content}"></p>
+                                <th:block th:text="${#session.removeAttribute('message')}" ></th:block>
+                            </div>
+                            <form id="form_validation" th:action="@{/admin/add-new-category}" method="POST" th:object="${objCategoryProduct}">
+                                <input type="hidden" th:field="*{id}">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group form-float">
+                                            <div class="form-line">
+                                                <input th:field="*{name}" type="text" class="form-control" name="name" id="name" >
+                                                <label class="form-label">Tên thể loại</label>
+                                                <span class="form-message" style="color: red;"></span>
+                                                <div class="alert alert-danger d-block" th:each="e : ${#fields.errors('name')} " th:text="${e}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary waves-effect" type="submit">Hoàn Thành</button>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function chooseFile(fileInput) {
+                if (fileInput.files && fileInput.files[0]){
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#image').attr('src',e.target.result);
+                    }
+                    reader.readAsDataURL(fileInput.files[0]);
+                }
+            }
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Validator({
+                    form: '#form_validation',
+                    formGroupSelector: '.form-group',
+                    errorSelector: '.form-message',
+                    rules: [
+                        Validator.isRequired('#name', 'Vui lòng nhập tên loại sản phẩm'),
+                        Validator.maxLength('#name', 500),
+                        Validator.isCutManyBlankByAddress('#name'),
+                    ],
+                });
+            });
+        </script>
+    </section>
+
+</body>
+
+</html>

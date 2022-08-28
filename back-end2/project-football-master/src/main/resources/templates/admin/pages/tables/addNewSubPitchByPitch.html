@@ -1,0 +1,326 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/base.html}">
+
+<head>
+    <title>Add New Sub Pitch By Pitch</title>
+
+
+    <!-- Colorpicker Css -->
+    <link th:href="@{../../plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css}" rel="stylesheet"/>
+
+    <!-- Dropzone Css -->
+    <link th:href="@{../../plugins/dropzone/dropzone.css}" rel="stylesheet">
+
+    <!-- Multi Select Css -->
+    <link th:href="@{../../plugins/multi-select/css/multi-select.css}" rel="stylesheet">
+
+    <!-- Bootstrap Spinner Css -->
+    <link th:href="@{../../plugins/jquery-spinner/css/bootstrap-spinner.css}" rel="stylesheet">
+
+    <!-- Bootstrap Tagsinput Css -->
+    <link th:href="@{../../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css}" rel="stylesheet">
+
+    <!-- Bootstrap Select Css -->
+    <link th:href="@{../../plugins/bootstrap-select/css/bootstrap-select.css}" rel="stylesheet"/>
+
+    <!-- noUISlider Css -->
+    <link th:href="@{../../plugins/nouislider/nouislider.min.css}" rel="stylesheet"/>
+
+    <!-- Custom Css -->
+    <link th:href="@{../../css/style.css}" rel="stylesheet">
+
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link th:href="@{../../css/themes/all-themes.css}" rel="stylesheet"/>
+    <script>
+        $(document).ready(() => {
+            $("#pitch").addClass("active");
+            $("#add-new-sub-pitch-by-pitch").addClass("active");
+        })
+    </script>
+</head>
+
+<body class="theme-red">
+
+<section class="content" layout:fragment="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Hệ Thống Quản Lí Sân Bóng Và Bán Phụ Kiện Thể Thao</h2>
+        </div>
+        <!-- Advanced Select -->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            Thêm mới sân nhỏ từ sân bóng cũ
+                        </h2>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
+                                   role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">more_vert</i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="javascript:void(0);">Action</a></li>
+                                    <li><a href="javascript:void(0);">Another action</a></li>
+                                    <li><a href="javascript:void(0);">Something else here</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+                        <p class="text-center" th:text="${session.message.content}"></p>
+                        <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+                    </div>
+                    <div class="body">
+                        <form id="form_validation" method="POST" th:action="@{/admin/add-new-sub-pitch-by-pitch}"
+                              th:object="${objSubPitchByPitch}" enctype="multipart/form-data"
+                        >
+                            <h2 class="text-center" th:if="${objSubPitchByPitch.isEdit}">Sửa sân bóng nhỏ</h2>
+                            <h2 class="text-center" th:unless="${objSubPitchByPitch.isEdit}">Thêm mới sân bóng nhỏ</h2>
+                            <div class="col-md-6">
+                                <input type="hidden" th:field="*{isEdit}">
+                                <input type="hidden" th:field="*{id}" class="form-control" name="id">
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" th:field="*{name}" class="form-control" name="name"
+                                               id="name">
+                                        <label class="form-label">Tên sân bóng nhỏ</label>
+                                        <span class="form-message" style="color: red;"></span>
+                                        <div class="alert alert-danger d-block"
+                                             th:each="e : ${#fields.errors('name')} " th:text="${e}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" th:field="*{price}" class="form-control" name="price"
+                                               id="price">
+                                        <span class="form-message" style="color: red;"></span>
+                                        <div class="alert alert-danger d-block"
+                                             th:each="e : ${#fields.errors('price')} " th:text="${e}">
+                                        </div>
+                                        <label class="form-label">Giá sân trên giờ</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p>
+                                        <b>Loại sân</b>
+                                    </p>
+                                    <select th:field="*{pitchTypeId}" class="form-control show-tick">
+                                        <option th:each="item:${listPitchType}" th:value="${item.id}"
+                                                th:text="${item.name}"
+                                                th:selected="${item.id == objSubPitchByPitch.pitchTypeId}">5
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>
+                                        <b>Sân lớn</b>
+                                    </p>
+                                    <select th:field="*{footballPitchId}" class="form-control show-tick">
+                                        <option th:each="item:${listPitchForSubPitch}" th:value="${item.id}"
+                                                th:selected="${item.id == objSubPitchByPitch.footballPitchId}"
+                                                th:text="${item.name}">5
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <textarea th:field="*{description}" name="description" id="description"
+                                                  cols="30" rows="3" class="form-control no-resize"></textarea>
+                                        <label class="form-label">Mô tả</label>
+                                        <span class="form-message" style="color: red;"></span>
+                                        <div class="alert alert-danger d-block"
+                                             th:each="e : ${#fields.errors('description')} " th:text="${e}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <script>
+                                function chooseFile1(fileInput) {
+                                    if (fileInput.files && fileInput.files[0]) {
+                                        var reader = new FileReader();
+                                        reader.onload = function (e) {
+                                            $('#image1').attr('src', e.target.result);
+                                        }
+                                        reader.readAsDataURL(fileInput.files[0]);
+                                    }
+                                }
+
+                                function chooseFile2(fileInput) {
+                                    if (fileInput.files && fileInput.files[0]) {
+                                        var reader = new FileReader();
+                                        reader.onload = function (e) {
+                                            $('#image2').attr('src', e.target.result);
+                                        }
+                                        reader.readAsDataURL(fileInput.files[0]);
+                                    }
+                                }
+
+                                function chooseFile3(fileInput) {
+                                    if (fileInput.files && fileInput.files[0]) {
+                                        var reader = new FileReader();
+                                        reader.onload = function (e) {
+                                            $('#image3').attr('src', e.target.result);
+                                        }
+                                        reader.readAsDataURL(fileInput.files[0]);
+                                    }
+                                }
+
+                                function chooseFile4(fileInput) {
+                                    if (fileInput.files && fileInput.files[0]) {
+                                        var reader = new FileReader();
+                                        reader.onload = function (e) {
+                                            $('#image4').attr('src', e.target.result);
+                                        }
+                                        reader.readAsDataURL(fileInput.files[0]);
+                                    }
+                                }
+
+                                function chooseFile5(fileInput) {
+                                    if (fileInput.files && fileInput.files[0]) {
+                                        var reader = new FileReader();
+                                        reader.onload = function (e) {
+                                            $('#image5').attr('src', e.target.result);
+                                        }
+                                        reader.readAsDataURL(fileInput.files[0]);
+                                    }
+                                }
+                            </script>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group form-float">
+                                        <div class="form-group">
+                                            <label class="form-label">Ảnh</label>
+                                            <input onchange="chooseFile1(this);" type="file" class="form-control"
+                                                   name="imageParam1">
+                                        </div>
+                                    </div>
+                                    <img id="image1"
+                                         src="http://placehold.it/500x300"
+                                         class="img-custom-responsive"
+                                         alt="Ảnh sân bóng"
+                                         width="400" height="300"
+                                         th:src="@{'/images/image-subpitch/'+${objSubPitchByPitch.image1}}"
+
+                                    >
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group form-float">
+                                        <div class="form-group">
+                                            <label class="form-label">Ảnh</label>
+                                            <input onchange="chooseFile2(this);" type="file" class="form-control"
+                                                   name="imageParam2">
+                                        </div>
+                                    </div>
+                                    <img id="image2"
+                                         src="http://placehold.it/500x300"
+                                         class="img-custom-responsive"
+                                         alt="Ảnh sân bóng"
+                                         width="400" height="300"
+                                         th:src="@{'/images/image-subpitch/'+${objSubPitchByPitch.image2}}"
+
+                                    >
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group form-float">
+                                        <div class="form-group">
+                                            <label class="form-label">Ảnh</label>
+                                            <input onchange="chooseFile3(this);" type="file" class="form-control"
+                                                   name="imageParam3">
+                                        </div>
+                                    </div>
+                                    <img id="image3"
+                                         src="http://placehold.it/500x300"
+                                         class="img-custom-responsive"
+                                         alt="Ảnh sân bóng"
+                                         width="400" height="300"
+                                         th:src="@{'/images/image-subpitch/'+${objSubPitchByPitch.image3}}"
+
+                                    >
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group form-float">
+                                        <div class="form-group">
+                                            <label class="form-label">Ảnh</label>
+                                            <input onchange="chooseFile4(this);" type="file" class="form-control"
+                                                   name="imageParam4">
+                                        </div>
+                                    </div>
+                                    <img id="image4"
+                                         src="http://placehold.it/500x300"
+                                         class="img-custom-responsive"
+                                         alt="Ảnh sân bóng"
+                                         width="400" height="300"
+                                         th:src="@{'/images/image-subpitch/'+${objSubPitchByPitch.image4}}"
+
+                                    >
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group form-float">
+                                        <div class="form-group">
+                                            <label class="form-label">Ảnh</label>
+                                            <input onchange="chooseFile5(this);" type="file" class="form-control"
+                                                   name="imageParam5">
+                                        </div>
+                                    </div>
+                                    <img id="image5"
+                                         src="http://placehold.it/500x300"
+                                         class="img-custom-responsive"
+                                         alt="Ảnh sân bóng"
+                                         width="400" height="300"
+                                         th:src="@{'/images/image-subpitch/'+${objSubPitchByPitch.image5}}"
+
+                                    >
+                                </div>
+                            </div>
+                            <button class="btn btn-primary waves-effect" type="submit">Hoàn thành</button>
+                            <a href="listPitch.html"></a>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            Validator({
+                form: '#form_validation',
+                formGroupSelector: '.form-group',
+                errorSelector: '.form-message',
+                rules: [
+                    //name
+                    Validator.minLength('#name', 5),
+                    Validator.isRequired('#name', 'Vui lòng nhập tên sân bóng!'),
+                    Validator.minLength('#name', 5),
+                    Validator.maxLength('#name', 50),
+                    Validator.isCutManyBlankByProduct('#name','Chỉ 1 khoảng trắng cách nhau bởi 2 kí tự,Cuối và' +
+                        ' đầu chuỗi không có khoảng cách,Phải có ít nhất 2 chữ cái, Không có kí tự đặc biệt!'),
+                    //price
+                    Validator.isRequired('#price', 'Vui lòng nhập giá sân bóng!'),
+                    Validator.isNumber('#price', 'Giá sân bóng phải lớn hơn 0!'),
+                    Validator.minLength('#price', 3),
+                    Validator.isBlank('#price', 'Vui lòng không nhập khoảng cách!'),
+                    //description
+                    Validator.minLength('#description', 20),
+                    Validator.maxLength('#description', 500),
+                    Validator.isCutManyBlankByDescription('#description'),
+                ],
+            });
+        });
+    </script>
+</section>
+</body>
+
+</html>

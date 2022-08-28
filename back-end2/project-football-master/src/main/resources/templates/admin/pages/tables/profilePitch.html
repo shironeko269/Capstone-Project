@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/base.html}">
+
+<head>
+    <title>Profile Pitch</title>
+    <script>
+        $(document).ready(() => {
+            $("#pitch").addClass("active");
+            $("#add-new-pitch").addClass("active");
+        })
+    </script>
+</head>
+
+<body class="theme-red">
+
+<section class="content" layout:fragment="content">
+    <div class="container-fluid">
+        <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+            <p class="text-center" th:text="${session.message.content}"></p>
+            <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+        </div>
+        <div class="row clearfix" style="position: relative;">
+            <div class="col-xs-12 col-sm-3">
+                <div class="card profile-card" style="position: fixed; width: 250px;" th:if="${managerMax}">
+                    <div class="profile-header">&nbsp;</div>
+                    <div class="profile-body">
+                        <div class="content-area">
+                            <h3 th:text="${managerMax.fullName}"></h3>
+                            <p>Nhân viên</p>
+                        </div>
+                    </div>
+                    <div class="profile-footer">
+                        <ul>
+                            <li>
+                                <span>Email</span>
+                                <span th:text="${managerMax.gmail}">14/1/2000</span>
+                            </li>
+                            <li>
+                                <span>Địa chỉ</span>
+                                <span th:text="${managerMax.address}">14/1/2000</span>
+                            </li>
+                            <li>
+                                <span>Số điện thoại</span>
+                                <span th:text="${managerMax.phone}">123456789</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-9" style="padding-left: 45px;">
+                <div class="card">
+                    <div class="body ">
+                        <div>
+                            <div>
+                                <h2 style="text-align: center;">Thông tin sân bóng</h2>
+                            </div>
+
+                            <div class="tab-content" th:if="${footballPitchMax}">
+                                <div role="tabpanel" class="tab-pane fade in active" id="home">
+                                    <div class="panel panel-default panel-post">
+                                        <div class="col-sm-12 col-md-12">
+                                            <div class="thumbnail">
+                                                <img src="http://placehold.it/500x300"
+                                                     th:src="@{'/images/image-pitch/'+${footballPitchMax.image}}">
+                                                <div class="caption">
+                                                    <h2 class="" style="text-align: center;font-size: larger;"
+                                                        th:text="${' Sân : '+footballPitchMax.name}"></h2>
+                                                    <p style="color:black"
+                                                       th:text="${' Mô tả : '+footballPitchMax.description}">
+
+                                                    </p>
+                                                    <div><b>Địa chỉ:</b> : <span
+                                                            th:text="' --- Đường : ' +${footballPitchMax.streetNumber}+
+                                                            ' --- Phường : ' +${footballPitchMax.wardName}+
+                                                            ' --- Quận '+${footballPitchMax.districtName} "></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h2 style="text-align: center;">Danh sách sân nhỏ</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12" th:each="item:${ListSubPitchDtoListByPitchMax}">
+                                <div class="thumbnail">
+                                    <div class="caption" style="position: relative">
+                                        <h3 th:text="${item.name}" style="text-align: center">Sân số 1</h3>
+                                        <img id="image1"
+                                             src="http://placehold.it/500x300"
+                                             class="img-responsive "
+                                             alt=""
+                                             th:src="@{'/images/image-subpitch/'+${item.image1}}"
+                                             style="height: 150px; width: 150px;display: inline-block;"
+                                        >
+                                        <img id="image1"
+                                             src="http://placehold.it/500x300"
+                                             class="img-responsive"
+                                             alt=""
+                                             th:src="@{'/images/image-subpitch/'+${item.image2}}"
+                                             style="height: 150px; width: 150px; display: inline-block;"
+                                        >
+                                        <img id="image1"
+                                             src="http://placehold.it/500x300"
+                                             class="img-responsive"
+                                             alt=""
+                                             th:src="@{'/images/image-subpitch/'+${item.image3}}"
+                                             style="height: 150px; width: 150px; display: inline-block;"
+                                        >
+                                        <img id="image1"
+                                             src="http://placehold.it/500x300"
+                                             class="img-responsive"
+                                             alt=""
+                                             th:src="@{'/images/image-subpitch/'+${item.image4}}"
+                                             style="height: 150px; width: 150px; display: inline-block;"
+                                        >
+                                        <img id="image1"
+                                             src="http://placehold.it/500x300"
+                                             class="img-responsive"
+                                             alt=""
+                                             th:src="@{'/images/image-subpitch/'+${item.image5}}"
+                                             style="height: 150px; width: 150px; display: inline-block;"
+                                        >
+                                        <p th:text="${' Mô tả : '+item.description}">
+
+                                        </p>
+<!--                                        margin: 0px 300px 0px 300px;-->
+                                        <h3><div class="label label-info" style="text-align: center;display: block;right: 300px;left: 300px;"
+                                                  th:text="${' Loại sân : '+item.nameType}"></div></h3>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+</body>
+
+</html>
