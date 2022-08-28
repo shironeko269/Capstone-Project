@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap">
+    <!--          rel="stylesheet">-->
+    <!--    <link th:href="@{https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap}" rel="stylesheet">-->
+    <link th:href="@{../../usercssjs/assets/css/styles1.css}" rel="stylesheet" />
+    <!---------------------------  SWEET ALERT ---------------------------->
+
+    <link th:href="@{../../plugins/sweetalert/sweetalert.css}" rel="stylesheet" />
+    <!-------------------------------------CSS , JS DATA TABLE lấy từ Đường dẫn ------------------------------------------>
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#example').DataTable({
+                "order": []
+            });
+        } );
+    </script>
+    <script>
+        $(document).ready(() => {
+            $("#home-active").removeClass("active");
+            $("#profile-active").addClass("active");
+        })
+
+    </script>
+
+    <title>Yotsuba</title>
+  <link rel="shortcut icon" th:href="@{/images/logo.svg}">
+</head>
+
+<body>
+
+
+<div class="d-flex" id="wrapper"  layout:fragment="content" th:if="${profile}">
+    <!-- Sidebar-->
+    <div class="border-end bg-white"  id="sidebar-wrapper" >
+        <div class="sidebar-heading border-bottom badge-danger"><i class="fas fa-key" ></i>TÀI KHOẢN CỦA TÔI</div>
+        <div class="list-group list-group-flush">
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/user/profile}" ><i  class="fas fa-id-card" style="margin-right: 5%;"></i>HỒ SƠ</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3"
+               th:href="@{/user/change-password}" ><i class="fas fa-unlock-alt" style="margin-right: 5%;" ></i>THAY ĐỔI MẬT KHẨU</a>
+
+        </div>
+        <div class="border-end bg-white">
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action list-group-item-light p-3 active"
+                   th:href="@{'/user/history-invoice/'+${profile.id}}" href="#"><i class="fas fa-file-invoice-dollar" style="margin-right: 5%;"></i>LỊCH SỬ ĐẶT HÀNG</a>
+            </div>
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                   th:href="@{/user/history-invoice-booking}" href="#"><i class="fas fa-file-invoice-dollar" style="margin-right: 5%;"></i>LỊCH SỬ ĐẶT SÂN</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page content wrapper-->
+    <div id="page-content-wrapper">
+        <button class="btn btn-outline-danger" id="sidebarToggle"><i class="fas fa-exchange-alt"></i></button>
+        <!-- Top navigation-->
+        <div class="col-sm-12 col-lg-12 " >
+            <div class="card col-lg-12">
+                <div class="card-header " style="background-color: #24b807; color: white;border-radius: 15px;border-style:double">
+                    <h2 style="margin-left: 1px">LỊCH SỬ ĐẶT HÀNG</h2>
+                </div>
+                <div style="height: 15px"></div>
+
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th><p style="text-align: center;font-weight: bolder;font-size: medium">Ngày đặt</p></th>
+                        <th><p style="text-align: center;font-weight: bolder;font-size: medium">Tổng tiền</p></th>
+                        <th><p style="text-align: center;font-weight: bolder;font-size: medium">Người nhận</p></th>
+
+                        <th><p style="text-align: center;font-weight: bolder;font-size: medium">Số ĐT</p></th>
+                        <th><p style="text-align: center;font-weight: bolder;font-size: medium">Thanh Toán</p></th>
+                        <th><p style="text-align: center;font-weight: bolder;font-size: medium">Trạng thái</p></th>
+                        <th><p style="text-align: center;font-weight: bolder;font-size: medium">Chi tiết</p></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item:${historyInvoice}">
+
+                        <td style="text-align: center;font-weight: bolder" th:text="${item.modifiedDate}"></td>
+                        <td style="text-align: center;font-weight: bolder" th:text="${#numbers.formatDecimal(item.totalPrice,0, 'COMMA', 0, 'POINT')} + 'đ'"></td>
+                        <td style="text-align: center;font-weight: bolder" th:text="${item.userName}"></td >
+                        <td style="text-align: center;font-weight: bolder" th:text="${item.phone}"></td >
+                        <!--                        <td style="text-align: center;font-weight: bolder" th:text="${item.note}" >-->
+
+                        </td>
+                        <td style="text-align: center;font-weight: bolder;color: green" th:text="${item.paymentOrderName}"></td>
+                        <td style="text-align: center;font-weight: bolder;" >
+                            <div   th:switch="${item.statusId}" >
+                                <p style=" font-weight: bold;color: blue" th:case="1">Xác nhận</p>
+                                <p style=" font-weight: bold;color: gray" th:case="2">Chưa xác nhận</p>
+                                <p style=" font-weight: bold;color: red" th:case="3">Hủy đơn</p>
+                                <p style=" font-weight: bold;color: green" th:case="4">Hoàn thành</p>
+                            </div>
+                        </td>
+                        <td style="text-align: center;">
+                            <button  class="btn btn-outline-info waves-effect" >
+                                <a th:href="@{'/user/history-invoice-detail/'+${item.id}}"  class=""><i class="fas fa-info-circle "></i></a>
+                            </button>
+
+                        </td>
+
+                        <!--  <td >
+                              &lt;!&ndash;                                                tao&ndash;&gt;
+                              <div th:switch="${item.statusId}">
+                                  <a th:case="2" href="#"
+                                     th:data-id="${item.id}" th:data-userID="${item.userId}"
+                                     onclick="showCancelMessage(this.getAttribute('data-id'),this.getAttribute('data-userID'))">
+                                      <div class="row clearfix js-sweetalert">
+                                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                              <button class="btn btn-outline-danger" data-type="cancel">
+                                                  <div class="demo-google-material-icon"> <i class="fas fa-trash-alt delete"></i></div>
+                                              </button>
+                                          </div>
+                                      </div>
+
+                                  </a>
+                                  <a th:case="1"><i class="fas fa-ban"></i></a>
+                                  <a th:case="3"><i class="fas fa-ban"></i></a>
+                                  <a th:case="4"><i class="fas fa-ban"></i></a>
+
+                              </div>
+  &lt;!&ndash;                            <a href="#"&ndash;&gt;
+  &lt;!&ndash;                               th:data-id="${item.id}" th:data-userID="${item.userId}"&ndash;&gt;
+  &lt;!&ndash;                               onclick="showCancelMessage(this.getAttribute('data-id'),this.getAttribute('data-userID'))"&ndash;&gt;
+  &lt;!&ndash;                            >&ndash;&gt;
+  &lt;!&ndash;                                <div class="row clearfix js-sweetalert">&ndash;&gt;
+  &lt;!&ndash;                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">&ndash;&gt;
+  &lt;!&ndash;                                        <button class="btn btn-danger waves-effect" data-type="cancel">&ndash;&gt;
+  &lt;!&ndash;                                            <div class="demo-google-material-icon"> <i class="fas fa-trash-alt delete"></i></div>&ndash;&gt;
+  &lt;!&ndash;                                        </button>&ndash;&gt;
+  &lt;!&ndash;                                    </div>&ndash;&gt;
+  &lt;!&ndash;                                </div>&ndash;&gt;
+
+  &lt;!&ndash;                            </a>&ndash;&gt;
+                              <script>
+                                  //tao
+                                  function showCancelMessage(id,userID) {
+                                      swal({
+                                          title: "Are you sure?",
+                                          text: "You will not be able to recover this imaginary file!",
+                                          type: "warning",
+                                          showCancelButton: true,
+                                          confirmButtonColor: "#DD6B55",
+                                          confirmButtonText: "Yes, delete it!",
+                                          cancelButtonText: "No, cancel plx!",
+                                          closeOnConfirm: false,
+                                          closeOnCancel: false
+                                      }, function (isConfirm) {
+                                          if (isConfirm) {
+                                              swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                                              deleteNew(id,userID);
+                                          } else {
+                                              swal("Cancelled", "Your imaginary file is safe :)", "error");
+                                          }
+                                      });
+                                  }
+                                  function deleteNew(id,userID) {
+                                      $.ajax({
+                                          url: '/user/delete-invoice/'+id,
+                                          type: 'DELETE',
+                                          success: function (result) {
+                                              setTimeout('location.reload()', 2345);
+                                          },
+                                          error: function (error) {
+                                              // window.location.href = "/user/history-invoice";
+                                              window.location.href = '/user/history-invoice/'+userID;
+                                          }
+                                      });
+                                  }
+                              </script>
+                          </td>-->
+                    </tr>
+
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+        <!-- Page content-->
+    </div>
+
+
+    <script th:src="@{../../plugins/sweetalert/sweetalert.min.js}"></script>
+
+</div>
+
+
+</body>
+
+</html>
+

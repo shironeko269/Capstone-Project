@@ -1,0 +1,641 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{manager/base.html}">
+<head>
+<!--    <meta charset="UTF-8">-->
+<!--    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">-->
+    <title>Home</title>
+    <script>
+        $(document).ready(() => {
+            $("#index").addClass("active");
+        })
+    </script>
+</head>
+
+<body class="theme-red">
+
+<section class="content" layout:fragment="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>
+                Hệ Thống Quản Lí Sân Bóng Và Bán Phụ Kiện Thể Thao
+            </h2>
+        </div>
+        <div class="row clearfix">
+            <div class="col-xs-12 col-sm-12">
+                <div class="card">
+                    <div class="body">
+                        <div th:if="${session.message}" class="container-fluid">
+                            <div th:classappend="${'alert-'+session.message.type}" class="alert text-center"
+                                 role="alert">
+                                <span th:text="${session.message.content}"></span>
+                            </div>
+                            <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+                        </div>
+                        <div>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active"><a href="#schedule_now" aria-controls="home"
+                                                                          role="tab" data-toggle="tab">Các trận đấu đang diễn ra</a></li>
+                                <li role="presentation"><a href="#statistical" aria-controls="settings" role="tab"
+                                                           data-toggle="tab">Thống kê</a></li>
+                                <li role="presentation"><a href="#home" aria-controls="settings" role="tab"
+                                                           data-toggle="tab">Hồ sơ cá nhân</a></li>
+                                <li role="presentation"><a href="#change_password_settings" aria-controls="settings"
+                                                           role="tab" data-toggle="tab">Đổi mật khẩu</a></li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade in active" id="schedule_now">
+                                    <div th:unless="${footballPitchDto}">
+                                        <h2 style="text-align: center" >chưa có sân bóng</h2>
+                                    </div>
+                                    <div class="card profile-card" th:if="${managerNow}">
+                                        <div class="body ">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12" th:each="itemSubPitch:${listSubPitchDto}">
+                                                <div class="thumbnail">
+                                                    <div class="caption">
+                                                        <h2 style="text-align:center" th:text="${itemSubPitch.name}">Sân số 1</h2>
+                                                        <div class="panel panel-default panel-post">
+                                                            <div class="panel-body">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-hover dashboard-task-infos">
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th>Tên khách hàng</th>
+                                                                            <th>Giờ đang và sắp diễn ra trận đấu</th>
+                                                                            <th>Sửa</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody th:if="${itemSubPitch.getId()==itemScheduleNow.getSubPitchId()}" th:each="itemScheduleNow,iStat:${footballPitchScheduleDtoList}">
+                                                                        <tr>
+                                                                            <td th:text="${itemScheduleNow.userNameNow}">Sân A</td>
+                                                                            <td th:text="${#dates.format(itemScheduleNow.timeStart, 'HH:mm')}+' - '+${#dates.format(itemScheduleNow.timeEnd, 'HH:mm')}">12 Đơn</td>
+                                                                            <td>
+                                                                                <a href="#" th:href="@{'/manager/update-booking-service/'+${itemScheduleNow.id}}">
+                                                                                    <div class="demo-google-material-icon"> <i class="material-icons">mode_edit</i> </div>
+                                                                                </a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade in" id="statistical">
+                                    <div th:unless="${footballPitchDto}">
+                                        <h2 style="text-align: center" >chưa có sân bóng</h2>
+                                    </div>
+                                    <div th:if="${footballPitchDto}">
+                                        <div class="row clearfix">
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <div class="info-box bg-pink hover-expand-effect">
+                                                    <div class="icon">
+                                                        <i class="material-icons">attach_money</i>
+                                                    </div>
+                                                    <div class="content">
+                                                        <div class="text">Tổng doanh thu</div>
+                                                        <div class="number count-to" th:data-from="0"
+                                                             th:data-to="${totalMoneyByManager}"
+                                                             data-speed="1000" data-fresh-interval="20"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <div class="info-box bg-cyan hover-expand-effect">
+                                                    <div class="icon">
+                                                        <i class="material-icons"><i class="fas fa-tshirt"></i></i>
+                                                    </div>
+                                                    <div class="content">
+                                                        <div  class="text">Tổng đơn đặt sân trong tháng</div>
+                                                        <div class="number count-to" th:data-from="0"
+                                                             th:data-to="${totalBookingByMonthByManager}"
+                                                             data-speed="1000" data-fresh-interval="20"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <div class="info-box bg-light-green hover-expand-effect">
+                                                    <div class="icon">
+                                                        <i class="material-icons"><i class="far fa-futbol"></i></i>
+                                                    </div>
+                                                    <div class="content">
+                                                        <div class="text">Tổng sân nhỏ đang có</div>
+                                                        <div class="number count-to" th:data-from="0"
+                                                             th:data-to="${totalSubPitchByManager}"
+                                                             data-speed="1000" data-fresh-interval="20"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row clearfix">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="card">
+                                                    <div class="header">
+                                                        <h2>Sơ đồ tiền thu đc từ đặt sân và dịch vụ theo tháng</h2>
+                                                        <ul class="header-dropdown m-r--5">
+                                                            <li class="dropdown">
+                                                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                                                    <i class="material-icons">more_vert</i>
+                                                                </a>
+                                                                <ul class="dropdown-menu pull-right">
+                                                                    <li><a href="javascript:void(0);">Action</a></li>
+                                                                    <li><a href="javascript:void(0);">Another action</a></li>
+                                                                    <li><a href="javascript:void(0);">Something else here</a></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="body">
+                                                        <canvas id="bar_chart" height="150"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Line Chart -->
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 hidden">
+                                                <div class="card">
+                                                    <div class="header">
+                                                        <h2>LINE CHART</h2>
+                                                        <ul class="header-dropdown m-r--5">
+                                                            <li class="dropdown">
+                                                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                                                    <i class="material-icons">more_vert</i>
+                                                                </a>
+                                                                <ul class="dropdown-menu pull-right">
+                                                                    <li><a href="javascript:void(0);">Action</a></li>
+                                                                    <li><a href="javascript:void(0);">Another action</a></li>
+                                                                    <li><a href="javascript:void(0);">Something else here</a></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="body">
+                                                        <canvas id="line_chart" height="150"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- #END# Line Chart -->
+
+
+                                            <!-- #END# Bar Chart -->
+                                        </div>
+                                        <div class="row clearfix">
+                                            <div class="col-xs-12 col-sm-12">
+                                                <div class="card">
+                                                    <div class="body">
+                                                        <div>
+                                                            <ul class="nav nav-tabs" role="tablist">
+                                                                <li role="presentation" class="active"><a href="#pitch"
+                                                                                                          aria-controls="home"
+                                                                                                          role="tab"
+                                                                                                          data-toggle="tab">Danh sách
+                                                                    top 5 dịch vụ bán chạy nhất</a></li>
+                                                                <li role="presentation"><a href="#hour"
+                                                                                           aria-controls="settings"
+                                                                                           role="tab" data-toggle="tab">Danh sách
+                                                                    top 5 giờ được thuê nhiều nhất</a></li>
+                                                                <li role="presentation"><a href="#customer"
+                                                                                           aria-controls="settings"
+                                                                                           role="tab" data-toggle="tab">Danh sách
+                                                                    top 5 khách thuê nhiều nhất</a></li>
+                                                            </ul>
+
+                                                            <div class="tab-content">
+                                                                <div role="tabpanel" class="tab-pane fade in active" id="pitch">
+                                                                    <div class="panel panel-default panel-post">
+                                                                        <div class="panel-body">
+                                                                            <div class="table-responsive">
+                                                                                <table class="table table-hover dashboard-task-infos">
+                                                                                    <thead>
+                                                                                    <tr>
+                                                                                        <th>STT</th>
+                                                                                        <th>Tên dịch vụ</th>
+                                                                                        <th>Hình ảnh</th>
+                                                                                        <th>Số lượng đã bán</th>
+                                                                                        <th>Tiền thu được</th>
+                                                                                    </tr>
+                                                                                    </thead>
+                                                                                    <tbody th:each="itemService,iStat:${listServiceSellMost}">
+                                                                                    <tr>
+                                                                                        <td th:text="${iStat.index+1}">1</td>
+                                                                                        <td th:text="${itemService.name}">Sân A</td>
+                                                                                        <td><div class="image">
+                                                                                            <img th:src="@{'/images/image-service/'+${itemService.image}}" width="50" height="50" alt="User" />
+                                                                                        </div></td>
+                                                                                        <td th:text="${itemService.totalQuantityThongKe}">12 Đơn</td>
+                                                                                        <td th:text="${#numbers.formatDecimal(itemService.totalPriceSell,0, 'COMMA', 0, 'POINT')} + 'đ'"></td>
+                                                                                    </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div role="tabpanel" class="tab-pane fade in" id="hour">
+                                                                    <div class="table-responsive">
+                                                                        <table class="table table-hover dashboard-task-infos">
+                                                                            <thead>
+                                                                            <tr>
+                                                                                <th>STT</th>
+                                                                                <th>Giờ</th>
+                                                                                <th>Số đơn đặt</th>
+                                                                            </tr>
+                                                                            </thead>
+                                                                            <tbody th:each="itembookingTime,iStat:${listBookingTimeStartMostByManagerId}">
+                                                                            <tr>
+                                                                                <td th:text="${iStat.index+1}" >1</td>
+                                                                                <td th:text="${itembookingTime.timeBookingMost}">19:00</td>
+                                                                                <td th:text="${itembookingTime.numberBookingMost}">12 Đơn</td>
+                                                                            </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                <div role="tabpanel" class="tab-pane fade in" id="customer">
+                                                                    <div class="table-responsive">
+                                                                        <table class="table table-hover dashboard-task-infos">
+                                                                            <thead>
+                                                                            <tr>
+                                                                                <th>STT</th>
+                                                                                <th>Tên đăng nhập</th>
+                                                                                <th>Gmail</th>
+                                                                                <th>Số điện thoại</th>
+                                                                                <th>Số lần quay lại</th>
+                                                                            </tr>
+                                                                            </thead>
+                                                                            <tbody th:each="itemUserReturn,iStat2:${listUserReturnMostByManagerId}">
+                                                                            <tr>
+                                                                                <td th:text="${iStat2.index+1}">1</td>
+                                                                                <td th:text="${itemUserReturn.userName}" >Nguyễn Văn A</td>
+                                                                                <td th:text="${itemUserReturn.gmail}">a@gmail.com</td>
+                                                                                <td th:text="${itemUserReturn.phone}">0123456789</td>
+                                                                                <td th:text="${itemUserReturn.numberUserReturnMost}">50 lần</td>
+                                                                            </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade in" id="home">
+                                    <div th:unless="${footballPitchDto}">
+                                        <h2 style="text-align: center" >chưa có sân bóng</h2>
+                                    </div>
+                                    <div class="card profile-card" th:if="${managerNow}">
+                                        <div class="profile-header">&nbsp;</div>
+                                        <div class="profile-body">
+                                            <div class="image-area">
+                                                <img th:src="@{'/images/avt-manager/'+${managerNow.image}}"
+                                                     style="height: 200px; width: 200px"
+                                                     alt="AdminBSB - Profile Image"/>
+                                            </div>
+                                            <div class="content-area">
+                                                <h3 th:text="${managerNow.fullName}">Nguyen Van A</h3>
+                                                <p>Quản lý</p>
+                                            </div>
+                                        </div>
+                                        <div class="profile-footer">
+                                            <ul>
+                                                <li>
+                                                    <span>Gmail</span>
+                                                    <span th:text="${managerNow.gmail}">A@gmail.com</span>
+                                                </li>
+                                                <li>
+                                                    <span>Số điện thoại</span>
+                                                    <span th:text="${managerNow.phone}">0123456789</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <hr>
+                                        <div class="body ">
+                                            <div>
+                                                <div>
+                                                    <h2 style="text-align: center;">Thông tin sân bóng</h2>
+                                                </div>
+                                                <div class="tab-content" th:if="${footballPitchDto}">
+
+                                                    <div class="col-sm-12 col-md-12">
+
+                                                        <div class="thumbnail">
+                                                            <h2 class="" style="text-align: center;font-size: larger;"
+                                                                th:text="${footballPitchDto.name}">Sân Tuyên Sơn</h2>
+                                                            <img th:src="@{'/images/image-pitch/'+${footballPitchDto.image}}"
+                                                                 style="height: 400px; width: 800px">
+                                                            <div class="caption">
+                                                                <p style="color:black"
+                                                                   th:text="${' Mô tả : '+footballPitchDto.description}"></p>
+                                                                <div>
+                                                                    <div><b>Địa chỉ:</b> : <span
+                                                                            th:text="'--- Đường : ' +${footballPitchDto.streetNumber}+
+                                                            ' --- Phường : ' +${footballPitchDto.wardName}+
+                                                            ' --- Quận '+${footballPitchDto.districtName} "></span>
+                                                                    </div>
+                                                                    <span>
+                                                                                <a href="" data-toggle="modal"
+                                                                                   data-target="#exampleModal">TRÊN BẢN ĐỒ</a></span></p>
+                                                                    <!-- Modal -->
+                                                                    <div style="width: 1400px; height: 630px; padding-right: 100px;"
+                                                                         class="modal fade " id="exampleModal"
+                                                                         tabindex="-1" role="dialog"
+                                                                         aria-labelledby="exampleModalLabel"
+                                                                         aria-hidden="true">
+                                                                        <div class="modal-dialog" role="document">
+                                                                            <div style="width: 700px; height: 630px;"
+                                                                                 class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <button type="button" class="close"
+                                                                                            data-dismiss="modal"
+                                                                                            aria-label="Close">
+                                                                                        <span aria-hidden="true">&times;</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div th:utext="${footballPitchDto.urlMap}"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    </span>
+                                                                </div>
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h2 style="text-align: center;">Danh sách sân nhỏ</h2>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-12" th:each="itemSubPitch:${listSubPitchDto}">
+                                                    <div class="thumbnail">
+                                                        <div class="caption">
+                                                            <h2 style="text-align:center" th:text="${itemSubPitch.name}">Sân số
+                                                                1</h2>
+                                                            <img id="image1"
+                                                                 class="img-responsive"
+                                                                 alt=""
+                                                                 th:src="@{'/images/image-subpitch/'+${itemSubPitch.image1}}"
+                                                                 style="height: 150px; width: 150px;display: inline-block;"
+                                                            >
+                                                            <img id="image2"
+                                                                 class="img-responsive"
+                                                                 alt=""
+                                                                 th:src="@{'/images/image-subpitch/'+${itemSubPitch.image2}}"
+                                                                 style="height: 150px; width: 150px;display: inline-block;"
+                                                            >
+                                                            <img id="image3"
+                                                                 class="img-responsive"
+                                                                 alt=""
+                                                                 th:src="@{'/images/image-subpitch/'+${itemSubPitch.image3}}"
+                                                                 style="height: 150px; width: 150px;display: inline-block;"
+                                                            >
+                                                            <img id="image4"
+                                                                 class="img-responsive"
+                                                                 alt=""
+                                                                 th:src="@{'/images/image-subpitch/'+${itemSubPitch.image4}}"
+                                                                 style="height: 150px; width: 150px;display: inline-block;"
+                                                            >
+                                                            <img id="image5"
+                                                                 class="img-responsive"
+                                                                 alt=""
+                                                                 th:src="@{'/images/image-subpitch/'+${itemSubPitch.image5}}"
+                                                                 style="height: 150px; width: 150px;display: inline-block;"
+                                                            >
+                                                            <p th:text="${' Mô tả : '+itemSubPitch.description}">
+                                                                Lorem Ipsum is simply dummy text of the printing and
+                                                                typesetting industry. Lorem Ipsum has been the
+                                                                industry's standard dummy
+                                                                text ever since the 1500s
+                                                            </p>
+                                                            <h3><span class="label label-info"
+                                                                      th:text="${' Loại sân : '+itemSubPitch.nameType}">Loại sân 5 người</span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade in" id="change_password_settings">
+                                    <form class="form-horizontal" th:action="@{/manager/change-password}" method="post"
+                                          id="change_password">
+                                        <div class="form-group">
+                                            <label for="passwordOld" class="col-sm-3 control-label">Mật khẩu cũ</label>
+                                            <div class="col-sm-9">
+                                                <div class="form-line">
+                                                    <input type="password" class="form-control" id="passwordOld"
+                                                           name="passwordOld" placeholder="Mật khẩu cũ">
+                                                    <span class="form-message" style="color: red;"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="passwordNew" class="col-sm-3 control-label">Mật khẩu mới</label>
+                                            <div class="col-sm-9">
+                                                <div class="form-line">
+                                                    <input type="password" class="form-control" id="passwordNew"
+                                                           name="passwordNew" placeholder="Mật khẩu mới">
+                                                    <span class="form-message" style="color: red;"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password_confirmation_new" class="col-sm-3 control-label">Mật
+                                                khẩu mới (Xác nhận)</label>
+                                            <div class="col-sm-9">
+                                                <div class="form-line">
+                                                    <input type="password" class="form-control"
+                                                           id="password_confirmation_new"
+                                                           name="password_confirmation_new"
+                                                           placeholder="Mật khẩu mới (Xác nhận)">
+                                                    <span class="form-message" style="color: red;"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-3 col-sm-9">
+                                                <button type="submit" class="btn btn-danger">Hoàn thành</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" th:inline="javascript" >
+        $(function () {
+            new Chart(document.getElementById("line_chart").getContext("2d"), getChartJs('line'));
+            new Chart(document.getElementById("bar_chart").getContext("2d"), getChartJs('bar'));
+            new Chart(document.getElementById("radar_chart").getContext("2d"), getChartJs('radar'));
+            new Chart(document.getElementById("pie_chart").getContext("2d"), getChartJs('pie'));
+        });
+        var config = null;
+        var listMonth=[[${totalPricePitchOfMonthByManagerId}]];
+        console.log(listMonth)
+        var arrMonth=[];
+        var arrPrice=[];
+        listMonth.forEach(value => arrMonth.push('Tháng '+value.month));
+        listMonth.forEach(value => arrPrice.push(value.totalPrice));
+
+        var listMonth1=[[${totalPriceServiceOfMonthByManagerId}]];
+        console.log(listMonth1)
+        var arrMonth1=[];
+        var arrPrice1=[];
+        listMonth1.forEach(value => arrMonth1.push('Tháng '+value.month));
+        listMonth1.forEach(value => arrPrice1.push(value.totalPrice));
+        function getChartJs(type) {
+            if (type === 'line') {
+                config = {
+                    type: 'line',
+                    data: {
+                        labels: ["January", "February", "March", "April", "May", "June", "July"],
+                        datasets: [{
+                            label: "My First dataset",
+                            data: [65, 59, 80, 81, 56, 55, 40],
+                            borderColor: 'rgba(0, 188, 212, 0.75)',
+                            backgroundColor: 'rgba(0, 188, 212, 0.3)',
+                            pointBorderColor: 'rgba(0, 188, 212, 0)',
+                            pointBackgroundColor: 'rgba(0, 188, 212, 0.9)',
+                            pointBorderWidth: 1
+                        }, {
+                            label: "My Second dataset",
+                            data: [28, 48, 40, 19, 86, 27, 90],
+                            borderColor: 'rgba(233, 30, 99, 0.75)',
+                            backgroundColor: 'rgba(233, 30, 99, 0.3)',
+                            pointBorderColor: 'rgba(233, 30, 99, 0)',
+                            pointBackgroundColor: 'rgba(233, 30, 99, 0.9)',
+                            pointBorderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: false
+                    }
+                }
+            }
+            else if (type === 'bar') {
+                config = {
+                    type: 'bar',
+                    data: {
+                        labels: arrMonth,
+                        datasets: [{
+                            label: "Sân bóng",
+                            data: arrPrice,
+                            backgroundColor: 'rgba(0, 188, 212, 0.8)'
+                        }, {
+                            label: "Dịch vụ",
+                            data: arrPrice1,
+                            backgroundColor: 'rgba(233, 30, 99, 0.8)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: false
+                    }
+                }
+            }
+            else if (type === 'radar') {
+                config = {
+                    type: 'radar',
+                    data: {
+                        labels: ["January", "February", "March", "April", "May", "June", "July"],
+                        datasets: [{
+                            label: "My First dataset",
+                            data: [65, 25, 90, 81, 56, 55, 40],
+                            borderColor: 'rgba(0, 188, 212, 0.8)',
+                            backgroundColor: 'rgba(0, 188, 212, 0.5)',
+                            pointBorderColor: 'rgba(0, 188, 212, 0)',
+                            pointBackgroundColor: 'rgba(0, 188, 212, 0.8)',
+                            pointBorderWidth: 1
+                        }, {
+                            label: "My Second dataset",
+                            data: [72, 48, 40, 19, 96, 27, 100],
+                            borderColor: 'rgba(233, 30, 99, 0.8)',
+                            backgroundColor: 'rgba(233, 30, 99, 0.5)',
+                            pointBorderColor: 'rgba(233, 30, 99, 0)',
+                            pointBackgroundColor: 'rgba(233, 30, 99, 0.8)',
+                            pointBorderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: false
+                    }
+                }
+            }
+            else if (type === 'pie') {
+                config = {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: [225, 50, 100, 40],
+                            backgroundColor: [
+                                "rgb(233, 30, 99)",
+                                "rgb(255, 193, 7)",
+                                "rgb(0, 188, 212)",
+                                "rgb(139, 195, 74)"
+                            ],
+                        }],
+                        labels: [
+                            "Pink",
+                            "Amber",
+                            "Cyan",
+                            "Light Green"
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: false
+                    }
+                }
+            }
+            return config;
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mong muốn của chúng ta
+            Validator({
+                form: '#change_password',
+                formGroupSelector: '.form-group',
+                errorSelector: '.form-message',
+                rules: [
+                    Validator.minLength('#passwordOld', 6),
+                    Validator.isRequired('#password_confirmation_new'),
+                    Validator.isConfirmed('#password_confirmation_new', function () {
+                        return document.querySelector('#change_password #passwordNew').value;
+                    }, 'Mật khẩu nhập lại không chính xác'),
+                ],
+            });
+        });
+
+    </script>
+</section>
+
+</body>
+
+</html>

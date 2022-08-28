@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/base.html}">
+
+<head>
+    <title>List Sub Pitch</title>
+    <!-- JQuery DataTable Css -->
+    <link th:href="@{../../plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css}" rel="stylesheet">
+    <!-- Sweetalert Css -->
+    <link th:href="@{../../plugins/sweetalert/sweetalert.css}" rel="stylesheet" />
+    <script>
+        $(document).ready(()=>{
+            $("#pitch").addClass("active");
+            $("#list-pitch").addClass("active");
+        })
+    </script>
+</head>
+
+<body class="theme-red">
+
+    <section class="content" layout:fragment="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>
+                    Hệ Thống Quản Lí Sân Bóng Và Bán Phụ Kiện Thể Thao
+                </h2>
+            </div>
+            <!-- Basic Examples -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                Danh sách sân nhỏ
+                            </h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Tên sân</th>
+                                            <th>Ảnh đại diện</th>
+                                            <th>Loại sân</th>
+                                            <th>Giá tiền / giờ</th>
+                                            <th>Sửa</th>
+                                            <th>Xóa</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Tên sân</th>
+                                            <th>Ảnh đại diện</th>
+                                            <th>Loại sân</th>
+                                            <th>Giá tiền / giờ</th>
+                                            <th>Sửa</th>
+                                            <th>Xóa</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <tr th:each="item,stat:${subPitchDtoList}">
+                                            <td th:text="${stat.index+1}"></td>
+                                            <td th:text="${item.name}">Tiger Nixon</td>
+                                            <td><div class="image">
+                                                <img src="../../images/user.png"
+                                                     th:src="@{'/images/image-subpitch/'+${item.image1}}" width="48" height="48"
+                                                     alt="User" />
+                                            </div></td>
+                                            <td th:text="${item.nameType}">Edinburgh</td>
+                                            <td th:text="${#numbers.formatDecimal(item.price,0,'COMMA', 0, 'POINT')}+' đ'"></td>
+                                            <td> 
+                                                <a href="#" th:href="@{'/admin/update-sub-pitch-by-pitch/'+${item.id}}">
+                                                    <div class="demo-google-material-icon"> <i class="material-icons">mode_edit</i> </div>
+                                                </a>
+                                            </td>
+                                            <td> 
+                                                <a href="#"
+                                                   th:data-id="${item.id}" th:data-name="${item.name}"
+                                                   onclick="showCancelMessage(this.getAttribute('data-id'),this.getAttribute('data-name'))"
+                                                >
+                                                    <div class="demo-google-material-icon"> <i class="material-icons">delete</i></div>
+                                                </a>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                                <script>
+                                    //tao
+                                    function showCancelMessage(id,name) {
+                                        swal({
+                                            title: "Bạn chắc chắn?",
+                                            text: "Bạn sẽ không thể khôi phục tệp này!",
+                                            type: "warning",
+                                            showCancelButton: true,
+                                            confirmButtonColor: "#DD6B55",
+                                            confirmButtonText: "Có, Tôi muốn xóa!",
+                                            cancelButtonText: "Không, Bỏ xóa plx!",
+                                            closeOnConfirm: false,
+                                            closeOnCancel: false
+                                        }, function (isConfirm) {
+                                            if (isConfirm) {
+                                                swal("Đã xóa!", "Sân nhỏ đã được xóa thành công", "success");
+                                                deleteNew(id);
+                                            } else {
+                                                swal("Hủy xóa", "Bạn đã hủy xóa sân nhỏ :)", "error");
+                                            }
+                                        });
+                                    }
+                                    function deleteNew(data) {
+                                        $.ajax({
+                                            url: '/admin/delete-sub-pitch/'+data,
+                                            type: 'DELETE',
+                                            success: function (result) {
+                                                setTimeout('location.reload()', 2345);
+                                            },
+                                            error: function (error) {
+                                                window.location.href = "/admin/list-pitch";
+                                            }
+                                        });
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap Notify Plugin Js -->
+        <script th:src="@{../../plugins/bootstrap-notify/bootstrap-notify.js}"></script>
+        <!-- SweetAlert Plugin Js -->
+        <script th:src="@{../../plugins/sweetalert/sweetalert.min.js}"></script>
+        <script th:src="@{../../js/pages/ui/dialogs.js}"></script>
+    </section>
+</body>
+
+</html>

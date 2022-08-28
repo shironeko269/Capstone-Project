@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/base.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Thêm mới nhà cung cấp</title>
+
+    <!-- Colorpicker Css -->
+    <link th:href="@{../../plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css}" rel="stylesheet" />
+
+    <!-- Dropzone Css -->
+    <link th:href="@{../../plugins/dropzone/dropzone.css}" rel="stylesheet">
+
+    <!-- Multi Select Css -->
+    <link th:href="@{../../plugins/multi-select/css/multi-select.css}" rel="stylesheet">
+
+    <!-- Bootstrap Spinner Css -->
+    <link th:href="@{../../plugins/jquery-spinner/css/bootstrap-spinner.css}" rel="stylesheet">
+
+    <!-- Bootstrap Tagsinput Css -->
+    <link th:href="@{../../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css}" rel="stylesheet">
+
+    <!-- Bootstrap Select Css -->
+    <link th:href="@{../../plugins/bootstrap-select/css/bootstrap-select.css}" rel="stylesheet" />
+
+    <!-- noUISlider Css -->
+    <link th:href="@{../../plugins/nouislider/nouislider.min.css}" rel="stylesheet" />
+    <script>
+        $(document).ready(()=>{
+            $("#product").addClass("active");
+            $("#add-new-supplier").addClass("active");
+        })
+    </script>
+</head>
+
+<body class="theme-red">
+
+    <section class="content" layout:fragment="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>
+                    Hệ Thống Quản Lí Sân Bóng Và Bán Phụ Kiện Thể Thao
+                </h2>
+            </div>
+            <!-- Advanced Select -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                Thêm mới nhà cung cấp
+                            </h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+                                <p class="text-center" th:text="${session.message.content}"></p>
+                                <th:block th:text="${#session.removeAttribute('message')}" ></th:block>
+                            </div>
+                            <form id="form_validation" th:action="@{/admin/add-new-supplier}" method="POST" th:object="${objSupplier}">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group form-float">
+                                            <div class="form-line">
+                                                <input type="text" th:field="*{companyName}" class="form-control" name="companyName" id="companyName">
+                                                <label class="form-label">Tên công ty</label>
+                                                <span class="form-message" style="color: red;"></span>
+                                                <div class="alert alert-danger d-block" th:each="e : ${#fields.errors('companyName')} " th:text="${e}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group form-float">
+                                                    <div class="form-line">
+                                                        <input type="text" th:field="*{contactName}" min="0" class="form-control" name="contactName" id="contactName">
+                                                        <label class="form-label">Liên hệ</label>
+                                                        <span class="form-message" style="color: red;"></span>
+                                                        <div class="alert alert-danger d-block" th:each="e : ${#fields.errors('contactName')} " th:text="${e}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group form-float">
+                                                    <div class="form-line">
+                                                        <input type="text" min="0" th:field="*{address}" max="100" class="form-control" name="address" id="address">
+                                                        <label class="form-label">Địa chỉ </label>
+                                                        <span class="form-message" style="color: red;"></span>
+                                                        <div class="alert alert-danger d-block" th:each="e : ${#fields.errors('address')} " th:text="${e}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-float">
+                                            <div class="form-line">
+                                                <input type="text" class="form-control" th:field="*{phone}" name="phone" id="phone">
+                                                <label class="form-label">Số điện thoại</label>
+                                                <span class="form-message" style="color: red;"></span>
+                                                <div class="alert alert-danger d-block" th:each="e : ${#fields.errors('phone')} " th:text="${e}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary waves-effect" type="submit">Hoàn thành</button>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+
+                Validator({
+                    form: '#form_validation',
+                    formGroupSelector: '.form-group',
+                    errorSelector: '.form-message',
+                    rules: [
+                        //company name
+                        Validator.isRequired('#companyName', 'Vui lòng nhập tên nhà cung cấp!'),
+                        Validator.minLength('#companyName', 2),
+                        Validator.maxLength('#companyName', 50),
+                        Validator.isCutManyBlankByProduct('#companyName','Chỉ 1 khoảng trắng cách nhau bởi 2 kí tự,Cuối và' +
+                            ' đầu chuỗi không có khoảng cách,Phải có ít nhất 2 chữ cái, Không có kí tự đặc biệt!'),
+                        //contact name
+                        Validator.isRequired('#contactName', 'Vui lòng nhập tên nhà cung cấp!'),
+                        Validator.minLength('#contactName', 5),
+                        Validator.maxLength('#contactName', 50),
+                        Validator.isCutManyBlankByAddress('#contactName','Chỉ 1 khoảng trắng cách nhau bởi 2 kí tự,Cuối và' +
+                            ' đầu chuỗi không có khoảng cách,Phải có ít nhất 2 chữ cái, Không có kí tự đặc biệt!'),
+                        //address
+                        Validator.minLength('#address', 5),
+                        Validator.maxLength('#address', 40),
+                        Validator.isCutManyBlankByAddress('#address'),
+                        //phone
+                        Validator.isRequired('#phone', 'Vui lòng nhập số điện thoại của bạn'),
+                        Validator.minLength('#phone', 10),
+                        Validator.maxLength('#phone', 10),
+                        Validator.isPhone('#phone'),
+                        Validator.isBlank('#phone', 'Số điện thoại không có khoảng cách'),
+                    ],
+                });
+            });
+        </script>
+    </section>
+</body>
+
+</html>

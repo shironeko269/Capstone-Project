@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{manager/base.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>View Order Detail</title>
+    <!-- Colorpicker Css -->
+    <link th:href="@{../../plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css}" rel="stylesheet" />
+
+    <!-- Dropzone Css -->
+    <link th:href="@{../../plugins/dropzone/dropzone.css}" rel="stylesheet">
+
+    <!-- Multi Select Css -->
+    <link th:href="@{../../plugins/multi-select/css/multi-select.css}" rel="stylesheet">
+
+    <!-- Bootstrap Spinner Css -->
+    <link th:href="@{../../plugins/jquery-spinner/css/bootstrap-spinner.css}" rel="stylesheet">
+
+    <!-- Bootstrap Tagsinput Css -->
+    <link th:href="@{../../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css}" rel="stylesheet">
+
+    <!-- Bootstrap Select Css -->
+    <link th:href="@{../../plugins/bootstrap-select/css/bootstrap-select.css}" rel="stylesheet" />
+
+    <!-- noUISlider Css -->
+    <link th:href="@{../../plugins/nouislider/nouislider.min.css}" rel="stylesheet" />
+    <script>
+        $(document).ready(()=>{
+            $("#order").addClass("active");
+            $("#list-order").addClass("active");
+        })
+    </script>
+</head>
+<body class="theme-red">
+
+    <section class="content" layout:fragment="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>Hệ Thống Quản Lí Sân Bóng Và Bán Phụ Kiện Thể Thao</h2>
+            </div>
+            <!-- Advanced Select -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                Thông tin chi tiết đơn đặt sân 1
+                            </h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div class="row">
+                                <div class="col-md-12" th:if="${bookingPitchDetail}">
+                                    <h2 style="margin-bottom: 25px" th:text="'Đơn đặt sân số '+${bookingPitchDetail.id}"></h2>
+                                    <div class="row">
+                                        <div th:text="'Tài khoản đặt sân: '+${bookingPitchDetail.userBook}" class="col-md-6"></div>
+                                        <div th:text="'Sân nhỏ được đặt: '+${bookingPitchDetail.subFootballPitchName}" class="col-md-6"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div th:text="'Ngày đặt: '+${#dates.format(bookingPitchDetail.dateCreate, 'dd/MM/yyyy')}" class="col-md-6"></div>
+                                        <div th:text="'Giờ đặt: '+${#dates.format(bookingPitchDetail.timeStart, 'HH:mm')} + '-' +${#dates.format(bookingPitchDetail.timeEnd, 'HH:mm')}" class="col-md-6"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div th:text="'Tiền đặt cọc: '+${#numbers.formatDecimal(bookingPitchDetail.preOrderPayment,0, 'COMMA', 0, 'POINT')} + 'đ'" class="col-md-6"></div>
+                                        <div th:text="'Phương thức thanh toán: '+${bookingPitchDetail.paymentBookingName}" class="col-md-6"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div th:text="'Trạng thái: '+${bookingPitchDetail.statusBookFootballPitchName}" class="col-md-6"></div>
+                                        <div th:text="'Tiền sân: '+${#numbers.formatDecimal(bookingPitchDetail.pricePitchSchedule,0, 'COMMA', 0, 'POINT')} + 'đ'" class="col-md-6"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" th:if="${!listServiceBooking.isEmpty()}">
+                                    <h2 style="margin-bottom: 25px" th:text="'Chi tiết dịch vụ của đơn đặt sân số '+${bookingPitchDetail.id}"></h2>
+                                    <div th:each="item:${listServiceBooking}" class="row">
+                                        <div class="col-md-3" th:text="'Tên sản phẩm: '+${item.nameService}"></div>
+                                        <div class="col-md-3" th:text="'Số lượng: '+${item.quantity}"></div>
+                                        <div class="col-md-3" th:text="'Đơn vị: '+${item.unit}"></div>
+                                        <div class="col-md-3" th:text="'Giá: '+${#numbers.formatDecimal(item.price,0, 'COMMA', 0, 'POINT')} +' đ'"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" th:if="${listServiceBooking.isEmpty()}">
+                                    <h4>Đơn đặt sân này không có dịch vụ</h4>
+                                </div>
+                            </div>
+                            <h2 th:if="${listServiceBooking.isEmpty()}" th:text="'Tổng giá tiền : '+${#numbers.formatDecimal(bookingPitchDetail.pricePitchSchedule,0, 'COMMA', 0, 'POINT')}+'đ'"></h2>
+                            <h2 th:if="${!listServiceBooking.isEmpty()}" th:text="'Tổng giá tiền : '+${#numbers.formatDecimal(#aggregates.sum(listServiceBooking.![price*quantity])+bookingPitchDetail.pricePitchSchedule,0, 'COMMA', 0, 'POINT')}+'đ'"></h2>
+                            <a class="btn btn-primary waves-effect" style="margin-top: 25px" href="#"
+                               th:href="@{'/manager/list-booking/'}">Trở lại
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

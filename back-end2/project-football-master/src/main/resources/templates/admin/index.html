@@ -1,0 +1,519 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/base.html}">
+<head>
+    <title>Trang Chủ</title>
+    <script>
+        $(document).ready(() => {
+            $("#index").addClass("active");
+        })
+    </script>
+</head>
+
+<body class="theme-red">
+
+<section class="content" layout:fragment="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>Hệ Thống Quản Lí Sân Bóng Và Bán Phụ Kiện Thể Thao</h2>
+        </div>
+
+        <!-- Widgets -->
+        <div class="row clearfix">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-pink hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">attach_money</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">Tổng doanh thu</div>
+                        <div class="number count-to" th:data-from="0" th:data-to="${statisticsMoneySystem}"
+                             data-speed="2000" data-fresh-interval="20"
+                        ></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-cyan hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons"><i class="fas fa-tshirt"></i></i>
+                    </div>
+                    <div class="content">
+                        <div class="text">Tổng mặt hàng đang bán</div>
+                        <div class="number count-to" th:data-from="0" th:data-to="${totalProducts}" data-speed="2000"
+                             data-fresh-interval="20"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-light-green hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons"><i class="far fa-futbol"></i></i>
+                    </div>
+                    <div class="content">
+                        <div class="text">Tổng Sân Bóng</div>
+                        <div class="number count-to" th:data-from="0" th:data-to="${totalFootballPitch}"
+                             data-speed="2000" data-fresh-interval="20"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-orange hover-expand-effect">
+                    <div class="icon">
+                        <i class="material-icons">person_add</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">Số lượng người dùng</div>
+                        <div class="number count-to" th:data-from="0" th:data-to="${totalUser}" data-speed="2000"
+                             data-fresh-interval="20"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- #END# Widgets -->
+        <!-- CPU Usage -->
+        <!-- <div class="row clearfix">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="header">
+                        <div class="row clearfix">
+                            <div class="col-xs-12 col-sm-6">
+                                <h2>CPU USAGE (%)</h2>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 align-right">
+                                <div class="switch panel-switch-btn">
+                                    <span class="m-r-10 font-12">REAL TIME</span>
+                                    <label>OFF<input type="checkbox" id="realtime" checked><span class="lever switch-col-cyan"></span>ON</label>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">more_vert</i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="javascript:void(0);">Action</a></li>
+                                    <li><a href="javascript:void(0);">Another action</a></li>
+                                    <li><a href="javascript:void(0);">Something else here</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="body">
+                        <div id="real_time_chart" class="dashboard-flot-chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <!-- #END# CPU Usage -->
+        <div class="row clearfix">
+            <!-- Line Chart -->
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>Số tiền thu được từ sân bóng theo tháng bằng BAR CHART</h2>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
+                                   role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">more_vert</i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="javascript:void(0);">Action</a></li>
+                                    <li><a href="javascript:void(0);">Another action</a></li>
+                                    <li><a href="javascript:void(0);">Something else here</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="body">
+                        <canvas id="bar_chart" height="150"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Line Chart -->
+            <!-- Bar Chart -->
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>Số tiền thu được từ sản phẩm theo tháng bằng LINE CHART</h2>
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
+                                   role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">more_vert</i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="javascript:void(0);">Action</a></li>
+                                    <li><a href="javascript:void(0);">Another action</a></li>
+                                    <li><a href="javascript:void(0);">Something else here</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="body">
+                        <canvas id="line_chart" height="150"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Bar Chart -->
+            <!-- Pie Chart -->
+            <div class="row clearfix">
+                <!-- Radar Chart -->
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>So sánh số tiền thu được từ dịch vụ và sản phẩm theo tháng bằng RADAR CHART</h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
+                                       role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <canvas id="radar_chart" height="150"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- #END# Radar Chart -->
+                <!-- Pie Chart -->
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Số tiền thu được từ dịch vụ theo tháng bằng PIE CHART</h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"
+                                       role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <canvas id="pie_chart" height="150"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- #END# Pie Chart -->
+            </div>
+            <!-- #END# Pie Chart -->
+        </div>
+        <div class="row clearfix">
+            <div class="col-xs-12 col-sm-12">
+                <div class="card">
+                    <div class="body">
+                        <div>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
+                                                                          data-toggle="tab">Top 5 sân bóng được thuê
+                                    nhiều nhất</a></li>
+                                <li role="presentation"><a href="#hour" aria-controls="settings" role="tab"
+                                                           data-toggle="tab">Top 5 giờ được thuê nhiều nhất</a></li>
+                                <li role="presentation"><a href="#customerTab" aria-controls="settings" role="tab"
+                                                           data-toggle="tab">Top 5 khách thuê nhiều nhất</a></li>
+                                <li role="presentation">
+                                    <a href="#productTab" aria-controls="settings" role="tab" data-toggle="tab">
+                                        Top 5 sản phẩm bán nhiều nhất</a></li>
+                                <li role="presentation">
+                                    <a href="#serviceTab" aria-controls="settings" role="tab" data-toggle="tab">
+                                        Top 5 dịch vụ bán nhiều nhất</a></li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade in active" id="home">
+                                    <div class="panel panel-default panel-post">
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover dashboard-task-infos">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>STT</th>
+                                                        <th>Tên sân</th>
+                                                        <th>Địa chỉ</th>
+                                                        <th>Nhân viên</th>
+                                                        <th>Đơn đặt</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each="item,stat:${listFootballPitchMost}">
+                                                        <td th:text="${stat.count}">1</td>
+                                                        <td th:text="${item.name}">Sân A</td>
+                                                        <td th:text="'Đường '+${item.streetNumber}
+                                                                        +'- Huyện: '+${item.wardName}+'- Quận: '+${item.districtName}">
+                                                            132 Nguyen Van Linh
+                                                        </td>
+                                                        <td th:text="${item.managerFullName}">John Doe</td>
+                                                        <td th:text="${item.totalBookingPitchBig}">
+                                                            12 Đơn/ngày
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade in" id="hour">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover dashboard-task-infos">
+                                            <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Tên sân</th>
+                                                <th>Địa chỉ</th>
+                                                <th>Giờ</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="item,stat:${listBookingTimeMost}">
+                                                <td th:text="${stat.count}">1</td>
+                                                <td th:text="${item.namePitchBookingMost}">Sân A</td>
+                                                <td th:text="${item.streetNumberPitchBookingMost}+' Huyện: '+${item.wardPitchBookingMost}+' Quận: '+${item.districtPitchBookingMost}">
+                                                    132 Nguyen Van Linh
+                                                </td>
+                                                <td th:text="${item.timeBookingMost}">19:00</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade in" id="customerTab">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover dashboard-task-infos">
+                                            <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Tên đăng nhập</th>
+                                                <th>Gmail</th>
+                                                <th>Số điện thoại</th>
+                                                <th>Số lần quay lại</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="item,stat:${listCustomerBookingLimit5}">
+                                                <td th:text="${stat.count}">1</td>
+                                                <td th:text="${item.userName}">Nguyễn Văn A</td>
+                                                <td th:text="${item.gmail}">a@gmail.com</td>
+                                                <td th:text="${item.phone}">0123456789</td>
+                                                <td th:text="${item.bookingCount}">
+                                                    50 lần
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade in" id="productTab">
+                                    <div class="panel panel-default panel-post">
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover dashboard-task-infos">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>STT</th>
+                                                        <th>Tên sản phẩm</th>
+                                                        <th>Hình ảnh</th>
+                                                        <th>Số lượng</th>
+                                                        <th>Tiền thu được</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each="item,stat:${listProductTop5SellMost}">
+                                                        <td th:text="${stat.count}">1</td>
+                                                        <td th:text="${item.name}">Sân A</td>
+                                                        <td>
+                                                            <div class="image">
+                                                                <img th:src="@{'/images/image-product/'+${item.image}}"
+                                                                     width="48" height="48" alt="User"/>
+                                                            </div>
+                                                        </td>
+                                                        <td th:text="${item.totalQuantityProductSell}">John Doe</td>
+                                                        <td th:text="${#numbers.formatDecimal(item.totalPriceProductSell,0,'COMMA', 0, 'POINT')}+' đ'">
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade in" id="serviceTab">
+                                    <div class="panel panel-default panel-post">
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover dashboard-task-infos">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>STT</th>
+                                                        <th>Tên dịch vụ</th>
+                                                        <th>Hình ảnh</th>
+                                                        <th>Số lượng đã bán</th>
+                                                        <th>Tiền thu được</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody th:each="item,iStat:${listTop5ServiceSellMost}">
+                                                    <tr>
+                                                        <td th:text="${iStat.index+1}">1</td>
+                                                        <td th:text="${item.name}">Sân A</td>
+                                                        <td>
+                                                            <div class="image">
+                                                                <img th:src="@{'/images/image-service/'+${item.image}}"
+                                                                     width="50" height="50" alt="User"/>
+                                                            </div>
+                                                        </td>
+                                                        <td th:text="${item.totalQuantityThongKe}">12 Đơn</td>
+                                                        <td th:text="${#numbers.formatDecimal(item.totalPriceSell,0,'COMMA', 0, 'POINT')}+' đ'"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" th:inline="javascript">
+        $(function () {
+            new Chart(document.getElementById("line_chart").getContext("2d"), getChartJs('line'));
+            new Chart(document.getElementById("bar_chart").getContext("2d"), getChartJs('bar'));
+            new Chart(document.getElementById("radar_chart").getContext("2d"), getChartJs('radar'));
+            new Chart(document.getElementById("pie_chart").getContext("2d"), getChartJs('pie'));
+        });
+        //doanh thu san bong theo thang
+        var listMonth = [[${reportFootballList}]];
+        console.log(listMonth)
+        var arrMonth = [];
+        var arrPrice = [];
+        listMonth.forEach(value => arrMonth.push('Tháng ' + value.month));
+        listMonth.forEach(value => arrPrice.push(value.totalPrice));
+        //doanh thu tat ca san pham theo thang
+        var listMonthOfProducts = [[${reportProductsList}]];
+        console.log(listMonthOfProducts)
+        var arrMonthOfProducts = [];
+        var arrPriceOfProducts = [];
+        listMonthOfProducts.forEach(value => arrMonthOfProducts.push('Tháng ' + value.month));
+        listMonthOfProducts.forEach(value => arrPriceOfProducts.push(value.totalPrice));
+        //---doanh thu tat ca dich vu theo thang
+        var listMonthOfServices = [[${reportServicesList}]];
+        console.log(listMonthOfServices)
+        var arrMonthOfServices = [];
+        var arrPriceOfServices = [];
+        listMonthOfServices.forEach(value => arrMonthOfServices.push('Tháng ' + value.month));
+        listMonthOfServices.forEach(value => arrPriceOfServices.push(value.totalPrice));
+
+        function getChartJs(type) {
+            var config = null;
+
+            if (type === 'line') {
+                config = {
+                    type: 'line',
+                    data: {
+                        labels: arrMonthOfProducts,
+                        datasets: [{
+                            label: "Tiền thu được",
+                            data: arrPriceOfProducts,
+                            borderColor: 'rgba(0, 188, 212, 0.75)',
+                            backgroundColor: 'rgba(0, 188, 212, 0.3)',
+                            pointBorderColor: 'rgba(0, 188, 212, 0)',
+                            pointBackgroundColor: 'rgba(0, 188, 212, 0.9)',
+                            pointBorderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: false
+                    }
+                }
+            } else if (type === 'bar') {
+                config = {
+                    type: 'bar',
+                    data: {
+                        labels: arrMonth,
+                        datasets: [{
+                            label: "Tiền thu được",
+                            data: arrPrice,
+                            backgroundColor: 'rgba(0, 188, 212, 0.8)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: false
+                    }
+                }
+            } else if (type === 'radar') {
+                config = {
+                    type: 'radar',
+                    data: {
+                        labels: arrMonthOfProducts,
+                        datasets: [{
+                            label: "Tiền thu được từ sản phẩm",
+                            data: arrPriceOfProducts,
+                            borderColor: 'rgba(0, 188, 212, 0.8)',
+                            backgroundColor: 'rgba(0, 188, 212, 0.5)',
+                            pointBorderColor: 'rgba(0, 188, 212, 0)',
+                            pointBackgroundColor: 'rgba(0, 188, 212, 0.8)',
+                            pointBorderWidth: 1
+                        }, {
+                            label: "Tiền thu được từ dịch vụ",
+                            data: arrPriceOfServices,
+                            borderColor: 'rgba(233, 30, 99, 0.8)',
+                            backgroundColor: 'rgba(233, 30, 99, 0.5)',
+                            pointBorderColor: 'rgba(233, 30, 99, 0)',
+                            pointBackgroundColor: 'rgba(233, 30, 99, 0.8)',
+                            pointBorderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: false
+                    }
+                }
+            } else if (type === 'pie') {
+                config = {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: arrPriceOfServices,
+                            backgroundColor: [
+                                "rgb(233, 30, 99)",
+                                "rgb(255, 193, 7)",
+                                "rgb(0, 188, 212)",
+                                "rgb(139, 195, 74)"
+                            ],
+                        }],
+                        labels: arrMonthOfServices
+                    },
+                    options: {
+                        responsive: true,
+                        legend: false
+                    }
+                }
+            }
+            return config;
+        }
+    </script>
+</section>
+
+</body>
+</html>

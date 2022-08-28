@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
+          rel="stylesheet">
+
+    <title>Yotsuba</title>
+  <link rel="shortcut icon" th:href="@{/images/logo.svg}">
+
+    <link th:href="@{../../usercssjs/assets/css/styles1.css}" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            $("#home-active").removeClass("active");
+            $("#profile-active").addClass("active");
+        })
+
+    </script>
+</head>
+
+<body>
+<div class="d-flex" id="wrapper" layout:fragment="content" th:if="${profile}" >
+    <!-- Sidebar-->
+
+    <div class="border-end bg-white"  id="sidebar-wrapper" >
+        <div class="sidebar-heading border-bottom badge-danger"><i class="fas fa-key" ></i>TÀI KHOẢN CỦA TÔI</div>
+        <div class="list-group list-group-flush">
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" th:href="@{/user/profile}" ><i  class="fas fa-id-card" style="margin-right: 5%;"></i>HỒ SƠ</a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3 active"
+               th:href="@{/user/change-password}" ><i class="fas fa-unlock-alt" style="margin-right: 5%;" ></i>THAY ĐỔI MẬT KHẨU</a>
+
+        </div>
+        <div class="border-end bg-white">
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                   th:href="@{'/user/history-invoice/'+${profile.id}}" href="#"><i class="fas fa-file-invoice-dollar" style="margin-right: 5%;"></i>LỊCH SỬ ĐẶT HÀNG</a>
+            </div>
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                   th:href="@{/user/history-invoice-booking}" href="#"><i class="fas fa-file-invoice-dollar" style="margin-right: 5%;"></i>LỊCH SỬ ĐẶT SÂN</a>
+            </div>
+        </div>
+    </div>
+    <!-- Page content wrapper-->
+
+
+    <style type="text/css">
+        .form-control-label{
+            font-weight: bolder;
+            color: lightblue;
+        }
+        .hidden{
+            color: red;
+        }
+    </style>
+    <div id="page-content-wrapper">
+        <button class="btn btn-outline-danger" id="sidebarToggle"><i class="fas fa-exchange-alt" ></i></button>
+        <!-- Top navigation-->
+        <div class="col-md-12 table" style="padding-left: 20%; padding-right: 20%;" >
+
+
+            <div class="card" >
+
+
+
+                <div class="card-header " style="background-color: #24b807; color: white;border-top-right-radius: 15px;border-top-left-radius:15px ">
+                    <h2>THAY ĐỔI MẬT KHẨU</h2>
+                </div>
+                <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert"
+                     role="alert">
+                    <p style="font-weight: bolder;font-size: large;color: red"  class="text-center" th:text="${session.message.content}"></p>
+                    <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+                </div>
+
+                <form  action="#"  class="col-lg-12 register-form row" id="change_password_user"
+                       th:action="@{/user/add-change-password}"  method="post"  >
+                    <div class="card-body card-block">
+
+                        <div class="row form-group">
+                            <div class="col col-md-4">
+                                <label class=" form-control-label">
+                                    MẬT KHẨU CŨ:</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <div class="form-group col-12 col-md-12 row">
+                                    <div class="col-12 col-md-10">
+                                        <input name="oldPassword" type="password" id="oldPass" class="form-control "
+                                               placeholder="Nhập tại đây"  />
+                                        <span class="form-message" style="color: red;"></span>
+                                    </div>
+                                    <div class="col-12 col-md-2">
+                                        <button id="btnPassword"  class="btn btn-outline-info buttonHideShow " type="button"
+                                                onclick="showOldPass()">Hiện/ẩn</span></button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="row form-group">
+                            <div class="col col-md-4">
+                                <label class=" form-control-label">
+                                    MẬT KHẨU MỚI:</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <div class="form-group col-12 col-md-12 row ">
+                                    <div class="col-12 col-md-10">
+                                        <input name="newPassword" type="password" id="newPassword" class="form-control "
+                                               placeholder="Nhập tại đây"   />
+                                        <span class="form-message" style="color: red;"></span>
+
+                                    </div>
+                                    <div class="col-12 col-md-2">
+                                        <!--                                        <button id="btnaPassword" class="btn btn-outline-info buttonHideShow" type="button"-->
+                                        <!--                                                onclick="showOldPass()">Hiện/ẩn</span></button>-->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="row form-group">
+                            <div class="col col-md-4">
+                                <label class=" form-control-label">
+                                    XÁC NHẬN MẬT KHẨU:</label>
+                            </div>
+                            <div class="col-12 col-md-8">
+                                <div class="form-group col-12 col-md-12 row">
+                                    <div class="col-12 col-md-10">
+                                        <input name="confirmPassword" id="confirmPassword" type="password" class="form-control"
+                                               placeholder="Nhập tại đây"  />
+                                        <span class="form-message" style="color: red;"></span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group  row " style="display: flex; height: 70px; justify-content: center;align-items: center;">
+                            <!--                                                        onclick="CheckValidatePass();hideError();"-->
+                            <button style="width: 160px; margin-left: 20px"
+                                    class="btn btn-primary waves-effect"
+                                    type="submit">LƯU THÔNG TIN
+                            </button >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--            <div class="row col-lg-12">-->
+            <!--                <div class="col-lg-5"></div>-->
+            <!--                <div class="col-sm-6">-->
+            <!--                </div>-->
+            <!--            </div>-->
+        </div>
+
+        <!-- Page content-->
+    </div>
+    <script>
+        function showOldPass() {
+            var inputOldPass = document.getElementById('oldPass');
+            if (inputOldPass.type === "password") {
+                inputOldPass.type = "text";
+            } else {
+                inputOldPass.type = "password";
+            }
+            var inputNewPass = document.getElementById('newPassword');
+            if (inputNewPass.type === "password") {
+                inputNewPass.type = "text";
+            } else {
+                inputNewPass.type = "password";
+            }
+            var inputConPass = document.getElementById('confirmPassword');
+            if (inputConPass.type === "password") {
+                inputConPass.type = "text";
+            } else {
+                inputConPass.type = "password";
+            }
+        }
+    </script>
+    <script th:href="@{https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mong muốn của chúng ta
+            Validator({
+                form: '#change_password_user',
+                formGroupSelector: '.form-group',
+                errorSelector: '.form-message',
+                rules: [
+                    Validator.minLength('#newPassword', 8),
+                    Validator.isBlank('#newPassword', 'Mật khẩu không có khoảng cách!'),
+                    Validator.isPassword('#newPassword'),
+                    Validator.isRequired('#confirmPassword'),
+                    Validator.isConfirmed('#confirmPassword', function () {
+                        return document.querySelector('#change_password_user #newPassword').value;
+                    }, 'Mật khẩu nhập lại không chính xác'),
+                ],
+            })
+        });
+    </script>
+    <script th:src="@{../../js/validator.js}"></script>
+</div>
+
+
+
+
+</body>
+
+</html>

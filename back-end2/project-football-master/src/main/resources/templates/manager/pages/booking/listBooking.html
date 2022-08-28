@@ -1,0 +1,262 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{manager/base.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>List Booking</title>
+
+    <!-- Colorpicker Css -->
+    <link th:href="@{../../plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css}" rel="stylesheet" />
+
+    <!-- Dropzone Css -->
+    <link th:href="@{../../plugins/dropzone/dropzone.css}" rel="stylesheet">
+
+    <!-- Multi Select Css -->
+<!--    <link th:href="@{../../plugins/multi-select/css/multi-select.css}" rel="stylesheet">-->
+
+    <!-- Bootstrap Spinner Css -->
+    <link th:href="@{../../plugins/jquery-spinner/css/bootstrap-spinner.css}" rel="stylesheet">
+
+    <!-- Bootstrap Tagsinput Css -->
+    <link th:href="@{../../plugins/bootstrap-tagsinput/bootstrap-tagsinput.css}" rel="stylesheet">
+
+    <!-- Bootstrap Select Css -->
+<!--    <link th:href="@{../../plugins/bootstrap-select/css/bootstrap-select.css}" rel="stylesheet" />-->
+
+    <!-- noUISlider Css -->
+    <link th:href="@{../../plugins/nouislider/nouislider.min.css}" rel="stylesheet" />
+
+    <!-- JQuery DataTable Css -->
+    <link th:href="@{../../plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css}" rel="stylesheet">
+    <!-- Sweetalert Css -->
+    <link th:href="@{../../plugins/sweetalert/sweetalert.css}" rel="stylesheet" />
+    <script>
+        $(document).ready(()=>{
+            $("#booking").addClass("active");
+            $("#list-booking").addClass("active");
+        })
+    </script>
+</head>
+
+<body class="theme-red">
+
+    <section class="content" layout:fragment="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>
+                    Hệ Thống Quản Lí Sân Bóng Và Bán Phụ Kiện Thể Thao
+                </h2>
+            </div>
+            <!-- Basic Examples -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                Danh sách đặt sân
+                            </h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                            <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert"
+                                 role="alert">
+                                <p class="text-center" th:text="${session.message.content}"></p>
+                                <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+                            </div>
+                            <div class="row clearfix js-sweetalert">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" >
+                                    <a href="#"
+                                       onclick="showMessageDeleteStatus3()"
+                                       style="margin-right: 10px"
+                                    >
+                                        <div class="btn btn-danger waves-effect" data-type="cancel">
+                                            <div class="demo-google-material-icon"> <i class="material-icons">delete</i></div>
+                                        </div>
+                                    </a>
+                                    Xóa tất cả đơn đặt sân đã bị hủy
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Tài khoản</th>
+                                            <th>Sân</th>
+                                            <th>Ngày đặt</th>
+                                            <th>Giờ đặt</th>
+                                            <th>Tiền đặt cọc</th>
+                                            <th>Phương thức thanh toán</th>
+                                            <th>Trạng thái</th>
+                                            <th>Duyệt đơn</th>
+                                            <th>Chi Tiết</th>
+                                            <th>Xóa</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Tài khoản</th>
+                                            <th>Sân</th>
+                                            <th>Ngày đặt</th>
+                                            <th>Giờ đặt</th>
+                                            <th>Tiền đặt cọc</th>
+                                            <th>Phương thức thanh toán</th>
+                                            <th>Trạng thái</th>
+                                            <th>Duyệt đơn</th>
+                                            <th>Chi Tiết</th>
+                                            <th>Xóa</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <tr th:each="itemBooking,iStat:${listBookFootballPitchService}">
+                                            <form th:action="@{/manager/update-booking}" method="post" th:object="${objBookingPitch}">
+                                                <input type="hidden" name="itemBookingId"  th:value="${itemBooking.getId()}">
+                                                <input type="hidden" name="itemBookingPreOrder" th:value="${itemBooking.getPreOrderPayment()}">
+                                                <input type="hidden" name="itemBookingUserId" th:value="${itemBooking.getUserId()}">
+                                                <input type="hidden" name="itemBookingScheduleId" th:value="${itemBooking.getFootballPitchScheduleId()}">
+                                                <input type="hidden" name="itemBookingSubPitchName" th:value="${itemBooking.getSubFootballPitchName()}">
+                                                <input type="hidden" name="itemBookingPaymentBookingId" th:value="${itemBooking.getPaymentBookingId()}">
+                                                <input type="hidden" name="itemBookingEmail" th:value="${itemBooking.getEmailUserBooking()}">
+                                            <td th:text="${iStat.index+1}">Id</td>
+                                            <td th:text="${itemBooking.userBook}">System Architect</td>
+                                            <td th:text="${itemBooking.subFootballPitchName}">San so 1</td>
+                                            <td th:text="${#dates.format(itemBooking.dateCreate, 'dd/MM/yyyy')}">16-2-2021</td>
+                                            <td th:text="${#dates.format(itemBooking.timeStart, 'HH:mm')}+'-'
+                                            +${#dates.format(itemBooking.timeEnd, 'HH:mm')}">7:00-7:01</td>
+                                            <td th:text="${#numbers.formatDecimal(itemBooking.preOrderPayment,0, 'COMMA', 0, 'POINT')} + 'đ'">300USD</td>
+                                            <td th:text="${itemBooking.paymentBookingName}"></td>
+                                            <td>
+                                                <select name="itemBookingStatusId" th:value="${itemBooking.getStatusBookFootballPitchId()}" >
+                                                    <option th:each="itemStatus:${listStatusBookFootballPitchService}" th:value="${itemStatus.id}"
+                                                            th:text="${itemStatus.name}" th:selected="${itemStatus.id == itemBooking.statusBookFootballPitchId}"
+                                                    >
+                                                    </option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <button type="submit">
+                                                    <div class="icon">
+                                                        <i class="material-icons">
+                                                            <i class="fas fa-check-circle" ></i></i>
+                                                    </div></button>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-check waves-effect" th:href="@{'/manager/view-booking-detail/'+${itemBooking.id}}" href="#">
+                                                    <div class="demo-google-material-icon"> <i class="material-icons">pageview</i></div>
+                                                </a>
+                                            </td>
+
+                                            <td>
+                                                <a href="#"
+                                                   th:data-id="${itemBooking.footballPitchScheduleId}" th:data-name="${itemBooking.userBook}"
+                                                   onclick="showCancelMessage(this.getAttribute('data-id'),this.getAttribute('data-name'))"
+                                                >
+                                                    <div class="row clearfix js-sweetalert">
+                                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                            <div class="btn btn-danger waves-effect" data-type="cancel">
+                                                                <div class="demo-google-material-icon"> <i class="material-icons">delete</i></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <script>
+                                                    function showCancelMessage(id,name) {
+                                                        swal({
+                                                            title: "Are you sure?",
+                                                            text: "",
+                                                            type: "warning",
+                                                            showCancelButton: true,
+                                                            confirmButtonColor: "#DD6B55",
+                                                            confirmButtonText: "Yes, delete it!",
+                                                            cancelButtonText: "No, cancel plx!",
+                                                            closeOnConfirm: false,
+                                                            closeOnCancel: false
+                                                        }, function (isConfirm) {
+                                                            if (isConfirm) {
+                                                                swal("Deleted!", "", "success");
+                                                                deleteNew(id);
+                                                            } else {
+                                                                swal("Cancelled", "", "error");
+                                                            }
+                                                        });
+                                                    }
+                                                    function deleteNew(data) {
+                                                        $.ajax({
+                                                            url: '/manager/delete-booking/'+data,
+                                                            type: 'DELETE',
+                                                            success: function (result) {
+                                                                setTimeout('location.reload()', 2345);
+                                                            },
+                                                            error: function (error) {
+                                                                window.location.href = "/manager/list-booking";
+                                                            }
+                                                        });
+                                                    }
+                                                    //delete all by status 3
+                                                    function showMessageDeleteStatus3() {
+                                                        swal({
+                                                            title: "Are you sure?",
+                                                            text: "",
+                                                            type: "warning",
+                                                            showCancelButton: true,
+                                                            confirmButtonColor: "#DD6B55",
+                                                            confirmButtonText: "Yes, delete it!",
+                                                            cancelButtonText: "No, cancel plx!",
+                                                            closeOnConfirm: false,
+                                                            closeOnCancel: false
+                                                        }, function (isConfirm) {
+                                                            if (isConfirm) {
+                                                                swal("Deleted!", "", "success");
+                                                                deleteAllByStatusCancel();
+                                                            } else {
+                                                                swal("Cancelled", "", "error");
+                                                            }
+                                                        });
+                                                    }
+                                                    function deleteAllByStatusCancel() {
+                                                        $.ajax({
+                                                            url: '/manager/delete-status-cancel',
+                                                            type: 'DELETE',
+                                                            success: function (result) {
+                                                                setTimeout('location.reload()', 2345);
+                                                            },
+                                                            error: function (error) {
+                                                                window.location.href = "/manager/list-booking";
+                                                            }
+                                                        });
+                                                    }
+                                                </script>
+                                            </td>
+                                            </form>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap Notify Plugin Js -->
+        <script th:src="@{../../plugins/bootstrap-notify/bootstrap-notify.js}"></script>
+        <!-- SweetAlert Plugin Js -->
+        <script th:src="@{../../plugins/sweetalert/sweetalert.min.js}"></script>
+        <script th:src="@{../../js/pages/ui/dialogs.js}"></script>
+    </section>
+</body>
+
+</html>

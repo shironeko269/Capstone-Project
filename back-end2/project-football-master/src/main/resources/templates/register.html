@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Yotsuba</title>
+  <link rel="shortcut icon" th:href="@{/images/logo.svg}">
+    <link th:href="@{/usercssjs/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/usercssjs/vendor/bootstrap/css/bootstrap.search.css}" rel="stylesheet">
+    <!-- Font Icon -->
+    <link rel="stylesheet" th:href="@{../../usercssjs/fonts/material-icon/css/material-design-iconic-font.min.css}">
+
+    <!-- Main css -->
+    <link rel="stylesheet" th:href="@{../../usercssjs/assets/css/style.css}">
+    <!-- Jquery Core Js -->
+    <script th:src="@{../../plugins/jquery/jquery.min.js}"></script>
+</head>
+<body style="background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.5) 50%),
+      url('https://images.pexels.com/photos/158780/leaf-nature-green-spring-158780.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500');">
+
+<div class="custom-main">
+
+    <!-- Sign up form -->
+    <section class="signup">
+        <div class="container">
+            <div class="signup-content">
+                <div class="signup-image">
+                    <a title="trở về trang chủ" href="#" th:href="@{/index}">
+                        <figure ><img src="../../usercssjs/assets/images/StoneDevil.jpg" alt="sing up image"></figure>
+                    </a>
+                    <a href="#" th:href="@{/sign-in}" class="signup-image-link">TÔI ĐÃ LÀ THÀNH VIÊN</a>
+                </div>
+                <div class="signup-form">
+                    <img src="assets/images/da" alt="">
+                    <figure><img src="usercssjs/assets/images/ĐANGKI1.png" alt="sing up image"></figure>
+                    <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+                        <p class="text-center" th:text="${session.message.content}"></p>
+                        <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+                    </div>
+                    <div th:if="${session.messageErrorOtp}" th:classappend="${session.messageErrorOtp.type}" class="alert" role="alert">
+                        <p class="text-center" th:text="${session.messageErrorOtp.content}"></p>
+                        <th:block th:text="${#session.removeAttribute('messageErrorOtp')}"></th:block>
+                    </div>
+                    <form action="#" class="register-form" id="register-form"
+                          th:action="@{/add-register}" th:object="${objUser}" method="post"
+                          enctype="multipart/form-data">
+
+                        <div class="form-group" style="margin-bottom: 0px;">
+                            <label for="username"><i class="zmdi  material-icons-name"></i></label>
+                            <input type="text" th:field="*{userName}" name="username"
+                                   id="username" placeholder="NHẬP TÊN CỦA BẠN"/>
+                            <div class="alert alert-danger d-block" th:each="e : ${#fields.errors('userName')} "
+                                 th:text="${e}">
+                            </div>
+                            <span class="form-message" style="color: red;"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="password"><i class="zmdi "></i></label>
+                            <input type="password" th:field="*{password}" name="password"
+                                   id="password" placeholder="NHẬP MẬT KHẨU" style="margin-top: 20px"/>
+                            <div class="alert alert-danger d-block" th:each="e : ${#fields.errors('password')} "
+                                 th:text="${e}">
+                            </div>
+                            <span class="form-message" style="color: red;"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="password_confirmation"><i class="zmdi "></i></label>
+                            <input type="password" name="password_confirmation"
+                                   id="password_confirmation" placeholder="NHẬP LẠI MẬT KHẨU"/>
+                            <span class="form-message" style="color: red;"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullName"><i class="zmdi material-icons-name"></i></label>
+                            <input type="text" th:field="*{fullName}" name="fullName" id="fullName"
+                                   placeholder="NHẬP TÊN ĐẦY ĐỦ CỦA BẠN"/>
+                            <div class="alert alert-danger d-block" th:each="e : ${#fields.errors('fullName')} "
+                                 th:text="${e}">
+                            </div>
+                            <span class="form-message" style="color: red;"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone"><i class="zmdi material-icons-name"></i></label>
+                            <input type="text" th:field="*{phone}" name="phone" id="phone"
+                                   placeholder="NHẬP SỐ ĐIỆN THOẠI CỦA BẠN"/>
+                            <div class="alert alert-danger d-block" th:each="e : ${#fields.errors('phone')} "
+                                 th:text="${e}">
+                            </div>
+                            <span class="form-message" style="color: #ff0000;"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="email"><i class="zmdi material-icons-name"></i></label>
+                            <input type="text" th:field="*{gmail}" name="email" id="email"
+                                   placeholder="NHẬP EMAIL CỦA BẠN"/>
+                            <div class="alert alert-danger d-block" th:each="e : ${#fields.errors('gmail')} "
+                                 th:text="${e}">
+                            </div>
+                            <span class="form-message" style="color: red;"></span>
+
+                        </div>
+
+                        <a id="getcode" class="btn btn-warning" value="Send verification code">Gửi OTP để xác nhận
+                            email</a>
+
+                        <div class="form-group">
+                            <label for="address"><i class="zmdi material-icons-name"></i></label>
+                            <input name="otp" id="otp" type="text" class="form-control" placeholder="Nhập mã OTP"/>
+                            <span class="form-message" style="color: red;"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="address"><i class="zmdi material-icons-name"></i></label>
+                            <input type="text" th:field="*{address}" name="address" id="address"
+                                   placeholder="NHẬP ĐỊA CHỈ CỦA BẠN"/>
+                            <div class="alert alert-danger d-block" th:each="e : ${#fields.errors('address')} "
+                                 th:text="${e}">
+                            </div>
+                            <span class="form-message" style="color: red;"></span>
+                        </div>
+
+                        <script>
+                            function chooseFile(fileInput) {
+                                if (fileInput.files && fileInput.files[0]) {
+                                    var reader = new FileReader();
+                                    reader.onload = function (e) {
+                                        $('#image').attr('src', e.target.result);
+                                    }
+                                    reader.readAsDataURL(fileInput.files[0]);
+                                }
+                            }
+                        </script>
+
+                        <div class="form-group" style="margin-bottom: 0px;">
+                            <div class="ml-2 col-sm-12">
+                                <input onchange="chooseFile(this);" type="file" name="profileImage" class="file">
+                            </div>
+                            <div class="ml-2 col-sm-6">
+                                <img id="image"
+                                     src="http://placehold.it/500x300"
+                                     class="img-custom-responsive"
+                                     alt=""
+                                     width="400" height="300"
+                                >
+                            </div>
+                        </div>
+
+
+                        <!--                        <div class="form-group">-->
+                        <!--                            <label for="re-pass"><i class="zmdi "></i></label>-->
+                        <!--                            <input type="password" name="re_pass" id="re_pass" placeholder="NHẬP LẠI MẬT KHẨU" required/>-->
+                        <!--                        </div>-->
+                        <!--                        <div class="form-group">-->
+                        <!--                            <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" required/>-->
+                        <!--                            <label for="agree-term" class="label-agree-term"><span><span></span></span>TÔI ĐỒNG Ý VỚI TẤT CẢ <a href="#" class="term-service">CÁC ĐIỀU KHOẢN</a></label>-->
+                        <!--                        </div>-->
+                        <div class="form-group form-button">
+                            <button type="submit" id="signup" class="form-submit"> ĐĂNG KÍ</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+</div>
+<script>
+    $('#getcode').click(function () {
+
+        //Send the verification code
+        var email = $("#email").val();
+        if (email == "") {
+            alert("please input your email");
+        }
+        //ajax realizes sending of background mailbox
+        $.ajax({
+            //url path
+            url: "/send-otp",
+            //data request data
+            data: {"email": email},
+            //dataType json
+            type: "POST"
+        });
+        alert("Vui lòng bạn kiểm tra " + email + " và nhập mã OTP ");
+
+
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Mong muốn của chúng ta
+        Validator({
+            form: '#register-form',
+            formGroupSelector: '.form-group',
+            errorSelector: '.form-message',
+            rules: [
+                //ten dang nhap
+                Validator.isRequired('#username', 'Vui lòng nhập tên đăng nhập của bạn'),
+                Validator.minLength('#username', 5),
+                Validator.maxLength('#username', 20),
+                Validator.isBlank('#username', 'Tên đăng nhập không có khoảng cách'),
+                Validator.isNotCharacterSpecial('#username'),
+                //ten day du
+                Validator.isRequired('#fullName', 'Vui lòng nhập tên đầy đủ của bạn'),
+                Validator.minLength('#fullName', 5),
+                Validator.maxLength('#fullName', 30),
+                Validator.isCutManyBlankByFullName('#fullName'),
+                //so dien thoại
+                Validator.isRequired('#phone', 'Vui lòng nhập tên đầy đủ của bạn'),
+                Validator.minLength('#phone', 10),
+                Validator.maxLength('#phone', 10),
+                Validator.isPhone('#phone'),
+                Validator.isBlank('#phone', 'Số điện thoại không có khoảng cách'),
+                //email
+                Validator.isEmail('#email'),
+                Validator.isBlank('#email', 'Email không có khoảng cách!'),
+                //password
+                Validator.minLength('#password', 8),
+                Validator.isBlank('#password', 'Mật khẩu không có khoảng cách!'),
+                Validator.isPassword('#password'),
+                //otp
+                Validator.isRequired('#otp', 'Vui lòng nhập mã OTP của bạn'),
+                Validator.minLength('#otp', 8),
+                Validator.maxLength('#otp', 8),
+                //address
+                Validator.minLength('#address', 5),
+                Validator.maxLength('#address', 40),
+                Validator.isCutManyBlankByAddress('#address'),
+                //confirm password
+                Validator.isRequired('#password_confirmation'),
+                Validator.isConfirmed('#password_confirmation', function () {
+                    return document.querySelector('#register-form #password').value;
+                }, 'Mật khẩu nhập lại không chính xác')
+            ],
+        });
+
+
+        // Validator({
+        //     form: '#form-2',
+        //     formGroupSelector: '.form-group',
+        //     errorSelector: '.form-message',
+        //     rules: [
+        //         Validator.isEmail('#email'),
+        //         Validator.minLength('#password', 6),
+        //     ],
+        //     onSubmit: function (data) {
+        //         // Call API
+        //         console.log(data);
+        //     }
+        // });
+    });
+</script>
+<!-- JS -->
+<!--validator-->
+<script th:src="@{../../js/validator.js}"></script>
+<script th:src="@{../../user/vendor/jquery/jquery.min1.js}"></script>
+<script th:src="@{../../user/assets/js/main.js}"></script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>

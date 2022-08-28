@@ -1,0 +1,13 @@
+
+    .update-item{
+        width: 300px;
+        border-radius: 3px;
+
+    }
+    .buttonHideShow{
+    	float: right;
+    }
+    #idHidePassword{
+         margin-left:0px;border: 1px solid gray; border-radius: 10px;
+    }
+
